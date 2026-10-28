@@ -1,0 +1,11 @@
+{
+  "name": "voyd-agent",
+  "version": "1.1.0",
+  "description": "VOYD: speak one sentence into the voyd, something real comes back. An AI agent for your terminal.",
+  "type": "module",
+  "bin": { "voyd": "bin/voyd.mjs" },
+  "files": ["bin"],
+  "engines": { "node": ">=18" },
+  "homepage": "https://voydagent.com",
+  "license": "MIT"
+}

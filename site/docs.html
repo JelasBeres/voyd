@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs · VOYD</title>
+<meta name="description" content="How to use VOYD: install the terminal agent, build a website from one sentence, ship it live, make a logo, write X content, audit a token.">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="canonical" href="https://voydagent.com/docs">
+<meta property="og:title" content="VOYD Docs"><meta property="og:image" content="https://voydagent.com/og.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@voydagent">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,700;0,800;0,900;1,800;1,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0A;--deep:#050505;--surface:#121212;--raise:#1C1C1C;--line:rgba(255,255,255,.1);--line2:rgba(255,255,255,.18);--fg:#F5F5F5;--mute:#A3A3A3;--faint:#5C5C5C;
+  --sans:"Inter Tight",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--pad:clamp(16px,4vw,72px)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16.5px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+::selection{background:#fff;color:#000}
+nav{position:sticky;top:0;z-index:20;background:rgba(10,10,10,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+nav .in{max-width:1400px;margin:0 auto;padding:0 var(--pad);height:66px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:11px;font:800 16px var(--sans);letter-spacing:.22em;text-decoration:none}.brand svg{width:26px;height:26px}
+nav .links{display:flex;gap:26px;margin-left:auto;font-size:14px;color:var(--mute)}nav .links a{text-decoration:none}nav .links a:hover,nav .links a.on{color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:999px;background:#fff;color:#000;font:700 14px var(--sans);text-decoration:none;border:0;cursor:pointer}
+@media (max-width:760px){nav .links{display:none}nav .btn{margin-left:auto}}
+.wrap{max-width:1400px;margin:0 auto;padding:0 var(--pad);display:grid;grid-template-columns:240px minmax(0,1fr);gap:clamp(32px,5vw,80px)}
+@media (max-width:960px){.wrap{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.toc{position:sticky;top:96px;align-self:start;padding:40px 0;font-size:14px}
+.toc p{font:500 11px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
+.toc a{display:block;padding:6px 0 6px 14px;border-left:1px solid var(--line);color:var(--mute);text-decoration:none}.toc a:hover{color:#fff}.toc a.on{color:#fff;border-color:#fff}
+main{padding:56px 0 120px;min-width:0;max-width:860px}
+.k{font:500 12px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin:0}
+h1{font:900 clamp(44px,6vw,84px)/1.02 var(--sans);letter-spacing:-.04em;margin:14px 0 0}
+h1 em,h2 em{font-style:italic;color:var(--mute)}
+.lead{color:#D4D4D4;font-size:19px;margin:22px 0 0;max-width:680px}
+section{padding-top:64px}
+h2{font:800 clamp(30px,3.4vw,42px)/1.08 var(--sans);letter-spacing:-.03em;margin:10px 0 18px}
+h3{font:700 19px var(--sans);margin:28px 0 8px}
+p{margin:0 0 14px}.m{color:var(--mute)}
+code{font:400 .9em var(--mono);background:var(--raise);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.cb{position:relative;margin:14px 0 18px;border:1px solid var(--line2);border-radius:14px;background:var(--deep);overflow:hidden}
+.cb pre{margin:0;padding:16px 18px;overflow-x:auto;font:400 14px/1.75 var(--mono);color:#fff}
+.cb pre .c{color:var(--faint)}
+.cb button{position:absolute;top:10px;right:10px;height:28px;padding:0 11px;border-radius:999px;border:1px solid var(--line2);background:var(--surface);color:var(--mute);font:500 12px var(--mono);cursor:pointer}.cb button:hover{color:#fff;border-color:#fff}
+.steps{list-style:none;margin:20px 0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;counter-reset:s}
+@media (max-width:600px){.steps li{padding:16px 16px 16px 48px!important}.steps li::before{left:16px!important;top:17px!important}}
+.steps li{position:relative;padding:18px 20px 18px 64px;border:1px solid var(--line);border-radius:14px;background:var(--surface);counter-increment:s}
+.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:20px;top:18px;font:500 14px var(--mono);color:var(--faint)}
+.steps li b{display:block;font-size:17px;margin-bottom:2px}
+.steps li .cb{margin:12px 0 0}
+.tip{margin:18px 0;padding:14px 18px;border-left:3px solid #fff;background:rgba(255,255,255,.04);border-radius:0 12px 12px 0;color:#D4D4D4;font-size:15px}
+.tip b{color:#fff}
+.files{margin:12px 0 18px;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.files div{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:16px;padding:12px 18px;border-bottom:1px solid var(--line);font-size:15px}.files div:last-child{border-bottom:0}
+.files code{background:none;border:0;padding:0;color:#fff}
+@media (max-width:600px){.files div{grid-template-columns:1fr;gap:2px}}
+.ex{display:grid;gap:8px;margin:12px 0 18px}.ex span{font:400 14px var(--mono);padding:10px 14px;border:1px solid var(--line);border-radius:10px;color:#D4D4D4}
+.soon{display:inline-block;font:500 11px var(--mono);letter-spacing:.12em;padding:2px 8px;border:1px solid var(--line2);border-radius:999px;color:var(--mute);vertical-align:3px;margin-left:6px}
+footer{border-top:1px solid var(--line);padding:30px var(--pad);font-size:13px;color:var(--mute);text-align:center}
+</style></head><body>
+<nav><div class="in">
+  <a class="brand" href="/" aria-label="VOYD home"><svg viewBox="0 0 256 256" aria-hidden="true"><g transform="translate(0 -6)" fill="none" stroke="#fff" stroke-width="20" stroke-miterlimit="10"><path d="M29.85 44 L128 214 L226.15 44"/><path d="M63.34 44 L128 156 L192.66 44"/><path d="M96.82 44 L128 98 L159.18 44"/></g></svg>VOYD</a>
+  <div class="links"><a href="/">Home</a><a href="/docs" class="on">Docs</a><a href="/#access">Get access</a><a href="https://x.com/voydagent" target="_blank" rel="noopener">@voydagent</a></div>
+  <a class="btn" href="/#access">Get access</a>
+</div></nav>
+
+<div class="wrap">
+<aside class="toc" id="toc">
+  <p>Docs</p>
+  <a href="#start">Quick start</a><a href="#website">Build a website</a><a href="#ship">Preview &amp; ship</a><a href="#logo">Make a logo</a><a href="#x">X content</a><a href="#audit">Audit a token</a><a href="#roast">Roast &amp; fix</a><a href="#engine">The engine</a><a href="#help">Troubleshooting</a><a href="#next">Coming next</a>
+</aside>
+
+<main>
+  <p class="k">VOYD Docs</p>
+  <h1>Speak into the voyd.<br><em>Here's how.</em></h1>
+  <p class="lead">VOYD is an AI agent that lives in your terminal. You say one sentence, it writes the project into your folder, and one more command puts it live. This page takes you from zero to a live site, a logo and your X content.</p>
+  <div class="tip"><b>Just want to try it?</b> Type an idea in the terminal on the <a href="/">home page</a>. VOYD AI builds a real page in about a minute, free, 3 times a day. No wallet, no install.</div>
+
+  <section id="start">
+    <p class="k">01 · Quick start</p>
+    <h2>Install it once. <em>Five minutes.</em></h2>
+    <ol class="steps">
+      <li><b>Have Node.js 18 or newer</b>Check with the command below. If it says "command not found" or a number below 18, install the LTS version from <a href="https://nodejs.org" target="_blank" rel="noopener">nodejs.org</a>.
+        <div class="cb"><pre>node -v</pre></div></li>
+      <li><b>Hold $VOYD</b>Hold at least <b style="display:inline">0.1% of the $VOYD supply</b> in one wallet. Only buy with the contract address shown on voydagent.com or posted by @voydagent.</li>
+      <li><b>Get your access code</b>Go to <a href="/#access">voydagent.com → Get access</a>, connect the wallet, and sign one message. Signing is free and sends nothing. You get a code like <code>VOYD-XXXXX-XXXXX-XXXXX-XXXXX</code>.</li>
+      <li><b>Install the CLI</b>
+        <div class="cb"><pre>npm i -g https://voydagent.com/voyd-agent.tgz</pre></div></li>
+      <li><b>Log in</b>The code locks to this computer. One wallet, one code, one device.
+        <div class="cb"><pre>voyd login VOYD-XXXXX-XXXXX-XXXXX-XXXXX
+voyd whoami</pre></div></li>
+    </ol>
+    <div class="tip">See every command any time with <code>voyd help</code>.</div>
+  </section>
+
+  <section id="website">
+    <p class="k">02 · Build a website</p>
+    <h2>One sentence in. <em>A real site out.</em></h2>
+    <p>Make an empty folder for the project, go into it, and say what you want. VOYD reads and writes files only inside the folder you start it in.</p>
+    <div class="cb"><pre>mkdir my-token-site
+cd my-token-site
+voyd "a landing site for my memecoin $FROG: chill pixel frog, black and green, a how-to-buy section and a CA placeholder"</pre></div>
+    <p>In about a minute you get an <code>index.html</code> (and any other files it needs), plus a short summary of what it built.</p>
+    <h3>What makes a good sentence</h3>
+    <p class="m">Say what it is, the vibe, the colours and the sections you want. The more specific, the better it comes back.</p>
+    <div class="ex"><span>voyd "a portfolio for a pixel artist, dark, big gallery grid, contact form"</span><span>voyd "an NFT mint page for 1,000 sad cats, countdown to Friday 8pm UTC, FAQ"</span><span>voyd "a waitlist page for my DAO, one email field, minimal, white on black"</span></div>
+    <h3>Keep changing it: sessions</h3>
+    <p>Type <code>voyd</code> on its own to open a session in the folder. Then just talk to it; it remembers the conversation.</p>
+    <div class="cb"><pre>voyd
+<span class="c">› make the headline bigger and add a FAQ with 3 questions</span>
+<span class="c">› change the green to a brighter lime</span>
+<span class="c">› /clear     start a fresh conversation (your files stay)</span>
+<span class="c">› /exit      leave</span></pre></div>
+  </section>
+
+  <section id="ship">
+    <p class="k">03 · Preview &amp; ship</p>
+    <h2>See it. <em>Then put it live.</em></h2>
+    <div class="cb"><pre>voyd preview            <span class="c"># opens http://localhost:4321 in your browser</span>
+voyd ship my-frog       <span class="c"># live at https://voydagent.com/s/my-frog/</span></pre></div>
+    <p>Run <code>voyd ship</code> with the same name again any time to update the live site. A name belongs to the wallet that shipped it first.</p>
+    <div class="tip"><b>Rules for shipped sites:</b> static files only (HTML, CSS, JS, images, fonts), an <code>index.html</code> in the folder, up to 8 MB. Sites run in a sandbox, so browser storage (localStorage, cookies) is not available. Pages that ask for seed phrases or private keys are refused.</div>
+  </section>
+
+  <section id="logo">
+    <p class="k">04 · Make a logo</p>
+    <h2>Three logo concepts. <em>One command.</em></h2>
+    <p>Run it in your project's folder, or describe the project in quotes.</p>
+    <div class="cb"><pre>voyd brand "$FROG, a chill pixel frog memecoin, black and green"</pre></div>
+    <p>It writes a <code>brand</code> folder:</p>
+    <div class="files">
+      <div><code>brand/logo-1.svg</code><span>three clearly different concepts: an abstract mark, a letterform, a pictorial idea</span></div>
+      <div><code>brand/logo-2.svg</code><span>vector SVG, works at 32px and on a billboard</span></div>
+      <div><code>brand/logo-3.svg</code><span>no text inside, two colours max</span></div>
+      <div><code>brand/x-profile.txt</code><span>display name, 3 bios, a pinned-post idea</span></div>
+      <div><code>brand/dex-info.txt</code><span>tagline, short and long description for DEX listings</span></div>
+      <div><code>brand/palette.txt</code><span>your colours with hex codes</span></div>
+      <div><code>brand/index.html</code><span>all three logos side by side, big and small, on dark and light</span></div>
+    </div>
+    <p>To compare them, run <code>voyd preview</code> and open <code>http://localhost:4321/brand/</code>. Want changes? Open a session (<code>voyd</code>) and say <span class="m">"make logo 2 bolder and use it as the X avatar"</span>.</p>
+  </section>
+
+  <section id="x">
+    <p class="k">05 · X content</p>
+    <h2>Your launch, <em>written.</em></h2>
+    <div class="cb"><pre>voyd x "$FROG, a chill pixel frog memecoin launching on Pons"</pre></div>
+    <div class="files">
+      <div><code>x/profile.txt</code><span>display name, 3 bios, header idea, the pinned post</span></div>
+      <div><code>x/launch-thread.txt</code><span>a 5 to 7 post launch thread that opens with a hook</span></div>
+      <div><code>x/posts.txt</code><span>10 posts for your first two weeks, each with when to post it and why</span></div>
+      <div><code>x/cards.html</code><span>3 post images at 1600×900, ready to screenshot and attach</span></div>
+    </div>
+    <p>Open the images with <code>voyd preview</code> → <code>http://localhost:4321/x/cards.html</code>, then screenshot each one. The contract address is left as <code>&lt;CA&gt;</code>: paste yours in before posting.</p>
+    <div class="tip"><b>Tip:</b> run <code>voyd brand</code> first, then <code>voyd x</code> in the same folder. VOYD reads the brand files and keeps the same name, voice and colours.</div>
+  </section>
+
+  <section id="audit">
+    <p class="k">06 · Audit a token</p>
+    <h2>Check it <em>before you ape.</em></h2>
+    <div class="cb"><pre>voyd audit 0xYourTokenContractAddress</pre></div>
+    <p>VOYD reads the contract straight from Robinhood Chain: owner, mint / fee / blacklist / pause functions in the bytecode, upgradeable proxies, Pons launch status, how much the deployer holds, how much is burned, and the verified source when there is one. You get a score from 0 to 100 with a verdict (SAFE, CAUTION or DANGER) and the reasons.</p>
+    <p class="m">It is a fast, honest first look, not a professional audit and not financial advice.</p>
+  </section>
+
+  <section id="roast">
+    <p class="k">07 · Roast &amp; fix</p>
+    <h2>Brutal review. <em>Then the fix.</em></h2>
+    <div class="cb"><pre>voyd roast https://any-website.com     <span class="c"># score + what's wrong, saved to .voyd/roast.txt</span>
+voyd fix                               <span class="c"># improves the site in this folder using that roast</span></pre></div>
+    <p>Roast your own live site, then run <code>voyd fix</code> in the folder that has its code. Without a roast, <code>voyd fix</code> does its own review first.</p>
+  </section>
+
+  <section id="engine">
+    <p class="k">08 · The engine</p>
+    <h2>What runs <em>where.</em></h2>
+    <p><b>VOYD AI</b> is the model behind every command. It runs on voydagent.com, so you don't need an API key or a paid AI plan: holding $VOYD is the key.</p>
+    <div class="files">
+      <div><code>Your files</code><span>stay on your computer. The CLI reads and writes only inside the folder you run it in, and sends the model only what it needs for the task.</span></div>
+      <div><code>Your code</code><span>your access code is kept in <code>~/.voyd/config.json</code>, readable only by you.</span></div>
+      <div><code>Daily limits</code><span>300 agent steps, 40 audits + roasts and 30 ships per code per day. They reset at 00:00 UTC.</span></div>
+      <div><code>Access check</code><span>your wallet's $VOYD balance is re-checked regularly. Sell below 0.1% and the code stops working; buy back and get a new code.</span></div>
+    </div>
+  </section>
+
+  <section id="help">
+    <p class="k">09 · Troubleshooting</p>
+    <h2>If something <em>doesn't work.</em></h2>
+    <div class="files">
+      <div><code>command not found: voyd</code><span>npm's global folder isn't on your PATH. Run <code>npm config get prefix</code> and add its <code>bin</code> folder to PATH, or reopen the terminal.</span></div>
+      <div><code>Unknown access code</code><span>Check for typos, or get a fresh code at <a href="/#access">Get access</a>. A new code replaces the old one.</span></div>
+      <div><code>Used on another device</code><span>Each code locks to the first computer. To switch, get a new code with the same wallet.</span></div>
+      <div><code>No longer holds enough</code><span>The wallet behind the code is under 0.1% of supply.</span></div>
+      <div><code>Daily limit reached</code><span>Wait until 00:00 UTC.</span></div>
+      <div><code>Session too long</code><span>Type <code>/clear</code> in the session. Your files stay.</span></div>
+    </div>
+    <p>Still stuck? Ask <b>Ask the voyd</b> (bottom right on the home page) or message <a href="https://x.com/voydagent" target="_blank" rel="noopener">@voydagent</a>. There is no Telegram, and nobody from VOYD will ever DM you first or ask for your seed phrase.</p>
+  </section>
+
+  <section id="next">
+    <p class="k">10 · Coming next</p>
+    <h2>Still <em>in the voyd.</em></h2>
+    <div class="files">
+      <div><code>voyd launch</code><span>launch a token on Pons from your terminal <span class="soon">PHASE 02</span></span></div>
+      <div><code>voyd video</code><span>launch videos from your project <span class="soon">PHASE 02</span></span></div>
+      <div><code>voyd echo</code><span>posts burns, whales and milestones to X for you <span class="soon">PHASE 03</span></span></div>
+      <div><code>voyd mascot</code><span>a character that replies on X in your brand's voice <span class="soon">PHASE 03</span></span></div>
+      <div><code>voyd battle</code><span>same prompt, two builders, holders vote <span class="soon">PHASE 04</span></span></div>
+    </div>
+  </section>
+</main>
+</div>
+<footer>VOYD · live on Robinhood Chain via Pons · not affiliated with Robinhood · <a href="https://x.com/voydagent" target="_blank" rel="noopener">@voydagent</a></footer>
+<script>
+// copy buttons on every code block
+document.querySelectorAll(".cb").forEach((b) => {
+  const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "copy";
+  btn.onclick = () => { const t = b.querySelector("pre").innerText.split("\n").map((l) => l.replace(/\s+#.*$/, "")).filter((l) => !l.trim().startsWith("›")).join("\n").trim(); navigator.clipboard?.writeText(t).then(() => { btn.textContent = "copied"; setTimeout(() => (btn.textContent = "copy"), 1400); }); };
+  b.append(btn);
+});
+// highlight the section you're reading
+const links = [...document.querySelectorAll(".toc a")];
+const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id)); }), { rootMargin: "-30% 0px -60% 0px" });
+document.querySelectorAll("main section").forEach((s) => io.observe(s));
+</script>
+</body></html>

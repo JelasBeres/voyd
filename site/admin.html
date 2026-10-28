@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>VOYD Panel</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,700;0,800;0,900;1,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0A;--card:#121212;--fg:#F5F5F5;--mute:#A3A3A3;--faint:#5C5C5C;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.22);--bad:#FF8A8A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 "Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:40px 16px 80px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:32px}header svg{width:28px;height:28px}header b{font-weight:800;font-size:18px;letter-spacing:.2em}header span{margin-left:auto;font:400 13px "JetBrains Mono",ui-monospace,monospace;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin-bottom:16px}
+.k{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);margin:0 0 12px}
+h2{margin:0 0 6px;font-size:26px;font-weight:800;letter-spacing:-.03em}
+p.s{margin:0 0 16px;color:var(--mute);font-size:14.5px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input{flex:1;min-width:0;background:#000;border:1px solid var(--line2);border-radius:12px;color:var(--fg);font:400 15px "JetBrains Mono",ui-monospace,monospace;padding:12px 14px;outline:none}
+input:focus{border-color:#fff}
+button{background:#fff;color:#000;border:0;border-radius:999px;font:700 14.5px "Inter Tight",system-ui,sans-serif;padding:12px 22px;cursor:pointer;white-space:nowrap}
+button.ghost{background:transparent;color:var(--fg);border:1px solid var(--line2)}
+button:disabled{opacity:.45;cursor:wait}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.stat{border:1px solid var(--line);border-radius:14px;padding:14px 16px}.stat b{display:block;font:500 21px "JetBrains Mono",ui-monospace,monospace;overflow-wrap:anywhere}.stat span{font-size:13px;color:var(--mute)}
+.addr{font:400 14px "JetBrains Mono",ui-monospace,monospace;overflow-wrap:anywhere}
+.msg{margin:12px 0 0;font:400 14px "JetBrains Mono",ui-monospace,monospace;min-height:1.4em;overflow-wrap:anywhere}.msg.bad{color:var(--bad)}.msg.ok{color:#fff}
+.chips{display:flex;gap:8px;margin:12px 0 0;flex-wrap:wrap}.chips button{padding:8px 14px;font:500 14px "JetBrains Mono",ui-monospace,monospace}
+table{width:100%;border-collapse:collapse;font:400 13px "JetBrains Mono",ui-monospace,monospace}td,th{text-align:left;padding:10px 6px;border-bottom:1px solid var(--line)}th{color:var(--mute);font-weight:400}
+a{color:#fff}
+.warn{border-left:3px solid #fff;padding:10px 14px;background:rgba(255,255,255,.04);border-radius:0 10px 10px 0;font-size:14px;color:#D4D4D4;margin:0 0 16px}
+.tag{display:inline-block;font:500 12px "JetBrains Mono",ui-monospace,monospace;padding:3px 10px;border:1px solid var(--line2);border-radius:999px;color:var(--mute);margin-left:6px}
+.hide{display:none}
+@media (max-width:560px){.wrap{padding-top:24px}.card{padding:18px}td:nth-child(3),th:nth-child(3){display:none}}
+</style></head><body><div class="wrap">
+<header><svg viewBox="0 0 256 256" aria-hidden="true"><g transform="translate(0 -6)" fill="none" stroke="#fff" stroke-width="20" stroke-miterlimit="10"><path d="M29.85 44 L128 214 L226.15 44"/><path d="M63.34 44 L128 156 L192.66 44"/><path d="M96.82 44 L128 98 L159.18 44"/></g></svg><b>VOYD PANEL</b><span id="who"></span></header>
+
+<section class="card" id="login">
+  <p class="k">Owner only</p><h2>Unlock the panel</h2>
+  <p class="s">Paste the admin key. It stays in this browser tab only and is cleared when you close it.</p>
+  <form class="row" id="lf"><input id="key" type="password" autocomplete="off" placeholder="Admin key"><button>Unlock</button></form>
+  <p class="msg" id="lm"></p>
+</section>
+
+<div id="app" class="hide">
+  <div class="stats">
+    <div class="stat"><b id="st-burned">–</b><span>$VOYD in the dead address</span></div>
+    <div class="stat"><b id="st-today">–</b><span id="st-today-l">Spent on buybacks in 24 h</span></div>
+    <div class="stat"><b id="st-eth">–</b><span>Burn wallet ETH</span></div>
+    <div class="stat"><b id="st-held">–</b><span>$VOYD held by the burn wallet</span></div>
+  </div>
+
+  <section class="card">
+    <p class="k">01 · Token</p><h2>$VOYD contract address</h2>
+    <p class="s">Saving it shows the CA on voydagent.com (with a copy button and a Pons link), lets Ask the voyd share it, and lets this panel burn. Leave empty to hide it again.</p>
+    <form class="row" id="tf"><input id="ca" autocomplete="off" spellcheck="false" placeholder="0x…"><button>Save</button></form>
+    <p class="msg" id="tm"></p>
+    <p class="s" id="tlinks" style="margin:10px 0 0"></p>
+  </section>
+
+  <section class="card">
+    <p class="k">02 · Burn wallet</p><h2>The wallet that buys and burns</h2>
+    <div class="warn">Use a <b>separate, fresh wallet</b> that only holds the ETH you plan to burn. Never paste your dev or main wallet here. The key is encrypted on the server and is only ever used to buy $VOYD with the dead address as the receiver, or to send $VOYD it holds to the dead address.</div>
+    <p class="s">Saved wallet: <span class="addr" id="bw">none</span></p>
+    <form class="row" id="kf"><input id="pk" type="password" autocomplete="off" placeholder="Burn wallet private key"><button>Save key</button><button type="button" class="ghost" id="rm">Remove</button></form>
+    <p class="msg" id="km"></p>
+  </section>
+
+  <section class="card">
+    <p class="k">03 · Buyback &amp; burn</p><h2>Buy back &amp; burn now <span class="tag" id="route">–</span></h2>
+    <p class="s" id="caps">One transaction: ETH buys $VOYD from the market and the tokens go straight to 0x…dEaD.</p>
+    <form class="row" id="bf"><input id="usd" inputmode="decimal" autocomplete="off" placeholder="Amount in USD, e.g. 50"><button id="go">Buy back &amp; burn</button></form>
+    <div class="chips"><button type="button" class="ghost" data-v="10">$10</button><button type="button" class="ghost" data-v="25">$25</button><button type="button" class="ghost" data-v="50">$50</button><button type="button" class="ghost" data-v="100">$100</button></div>
+    <p class="msg" id="bm"></p>
+    <p class="s" style="margin:18px 0 10px">Bought $VOYD by hand into the burn wallet? Send all of it to the dead address:</p>
+    <button type="button" class="ghost" id="bh">Burn the $VOYD in the wallet</button>
+    <p class="msg" id="hm"></p>
+  </section>
+
+  <section class="card">
+    <p class="k">04 · Log</p><h2>Recent burns</h2>
+    <p class="s">The total and the latest burns also show on the website. Post each one on X with its tx link.</p>
+    <table><thead><tr><th>When</th><th>Spent</th><th>Route</th><th>$VOYD burned</th><th>Tx</th></tr></thead><tbody id="log"><tr><td colspan="5" style="color:var(--mute)">No burns yet.</td></tr></tbody></table>
+  </section>
+  <section class="card">
+    <p class="k">05 · Team CLI code</p><h2>Use the voyd CLI without holding</h2>
+    <p class="s">For you and the team, and for testing before launch. Owner codes skip the holder check and work on any device. Making a new one with the same label replaces the old one.</p>
+    <form class="row" id="cf"><input id="cl" autocomplete="off" placeholder="Label, e.g. dev" maxlength="32"><button>Make code</button></form>
+    <p class="msg" id="cm"></p>
+  </section>
+
+  <section class="card">
+    <p class="k">06 · Shipped sites</p><h2>voydagent.com/s/…</h2>
+    <p class="s">Everything holders shipped with voyd ship. Remove anything abusive.</p>
+    <table><thead><tr><th>Site</th><th>Wallet</th><th>Size</th><th></th></tr></thead><tbody id="sites"><tr><td colspan="4" style="color:var(--mute)">Loading…</td></tr></tbody></table>
+  </section>
+</div>
+</div>
+<script>
+const $ = (s) => document.querySelector(s), EX = "https://explorer.mainnet.chain.robinhood.com", TX = EX + "/tx/";
+const nf = (v, d = 0) => v == null ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: d });
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+let KEY = ""; try { KEY = sessionStorage.getItem("voyd.admin") || ""; } catch {}
+let S = null;
+
+async function call(path, body) {
+  const r = await fetch("/api/admin/" + path, { method: "POST", headers: { "content-type": "application/json", "x-admin-key": KEY }, body: JSON.stringify(body || {}) });
+  const j = await r.json().catch(() => ({ error: "Bad reply from the server." }));
+  if (!r.ok) throw Object.assign(new Error(j.error || "Failed."), { status: r.status });
+  return j;
+}
+function say(el, text, kind) { el.className = "msg " + (kind || ""); el.textContent = text; }
+
+function render(v) {
+  if (!S) sites();
+  S = v;
+  $("#login").classList.add("hide"); $("#app").classList.remove("hide"); $("#who").textContent = "owner";
+  if (document.activeElement !== $("#ca")) $("#ca").value = v.token || "";
+  $("#st-burned").textContent = v.burned == null ? "–" : nf(v.burned);
+  $("#st-today").textContent = "$" + nf(v.today, 2); $("#st-today-l").textContent = `Spent on buybacks in 24 h (cap $${v.dayUsd})`;
+  $("#st-eth").textContent = v.eth == null ? "–" : `${Number(v.eth).toFixed(5)}` + (v.ethUsd ? ` ≈ $${nf(v.eth * v.ethUsd, 2)}` : "");
+  $("#st-held").textContent = v.held == null ? "–" : nf(v.held);
+  $("#bw").textContent = v.address || "none";
+  $("#tlinks").innerHTML = v.token ? `Shown on voydagent.com · <a href="https://ponsfamily.com/launchpad/${esc(v.token)}" target="_blank" rel="noopener">Pons ↗</a> · <a href="${EX}/token/${esc(v.token)}" target="_blank" rel="noopener">Explorer ↗</a>` + (v.pons === false ? " · <b>not found on Pons</b>" : "") : "Not set: the website says the CA will be posted by @voydagent at launch.";
+  $("#route").textContent = !v.token ? "no token" : v.pons === false ? "not a Pons token" : v.graduated ? "Uniswap pool" : v.graduated === false ? "Pons curve" : "–";
+  $("#caps").textContent = `One transaction: ETH buys $VOYD from the market (${v.graduated ? "its Uniswap pool, 5% max slippage" : "its Pons curve, 3% max slippage"}) and the tokens go straight to 0x…dEaD. Max $${v.maxUsd} per burn, $${v.dayUsd} per 24 h.` + (v.ethUsd ? ` ETH = $${nf(v.ethUsd, 2)}.` : "");
+  $("#log").innerHTML = v.log.length ? v.log.map((x) => `<tr><td>${new Date(x.at).toLocaleString()}</td><td>${x.usd ? "$" + nf(x.usd, 2) : "–"}</td><td>${esc(x.where || "")}</td><td>${nf(x.tokens)}</td><td><a href="${TX + esc(x.tx)}" target="_blank" rel="noopener">${esc(x.tx.slice(0, 10))}…</a></td></tr>`).join("") : '<tr><td colspan="5" style="color:var(--mute)">No burns yet.</td></tr>';
+}
+async function refresh() { try { render(await call("state")); } catch (e) { if (e.status === 401) logout(e.message); } }
+function logout(m) { KEY = ""; try { sessionStorage.removeItem("voyd.admin"); } catch {} $("#app").classList.add("hide"); $("#login").classList.remove("hide"); if (m) say($("#lm"), m, "bad"); }
+
+$("#lf").onsubmit = async (e) => {
+  e.preventDefault(); KEY = $("#key").value.trim(); $("#key").value = "";
+  say($("#lm"), "Checking…");
+  try { render(await call("state")); try { sessionStorage.setItem("voyd.admin", KEY); } catch {} } catch (x) { logout(x.message); }
+};
+$("#tf").onsubmit = async (e) => {
+  e.preventDefault(); const t = $("#ca").value.trim();
+  if (t && !confirm(`Set $VOYD to\n${t}\n\nIt goes live on voydagent.com right away. Double-check every character.`)) return;
+  say($("#tm"), "Saving…");
+  try { render(await call("token", { token: t })); say($("#tm"), t ? "Saved. The CA is live on the website." : "Cleared. The website no longer shows a CA.", "ok"); } catch (x) { say($("#tm"), x.message, "bad"); }
+};
+$("#kf").onsubmit = async (e) => {
+  e.preventDefault(); const k = $("#pk").value.trim(); $("#pk").value = "";
+  if (!k) return say($("#km"), "Paste the burn wallet's private key first.", "bad");
+  say($("#km"), "Saving…");
+  try { render(await call("key", { privateKey: k })); say($("#km"), "Saved. Send ETH to " + S.address + " to fund burns.", "ok"); } catch (x) { say($("#km"), x.message, "bad"); }
+};
+$("#rm").onclick = async () => {
+  if (!confirm("Remove the saved burn wallet key from the server?")) return;
+  try { render(await call("key", { privateKey: "" })); say($("#km"), "Removed.", "ok"); } catch (x) { say($("#km"), x.message, "bad"); }
+};
+document.querySelectorAll(".chips button").forEach((b) => (b.onclick = () => { $("#usd").value = b.dataset.v; }));
+$("#bf").onsubmit = async (e) => {
+  e.preventDefault(); const usd = Number($("#usd").value);
+  if (!(usd > 0)) return say($("#bm"), "Enter an amount in dollars.", "bad");
+  if (!confirm(`Buy back about $${usd} of $VOYD from the market and burn it now?`)) return;
+  $("#go").disabled = true; say($("#bm"), "Buying back and burning… this takes a few seconds.");
+  try {
+    const v = await call("burn", { usd }); render(v);
+    const d = v.done; $("#bm").className = "msg ok";
+    $("#bm").innerHTML = `🔥 Bought back ${nf(d.tokens)} $VOYD for ${Number(d.eth).toFixed(5)} ETH (≈$${nf(d.usd, 2)}) on the ${esc(d.where)} and burned it. <a href="${TX + esc(d.tx)}" target="_blank" rel="noopener">View tx</a>`;
+    $("#usd").value = "";
+  } catch (x) { say($("#bm"), x.message, "bad"); }
+  $("#go").disabled = false;
+};
+$("#bh").onclick = async () => {
+  if (!confirm("Send ALL $VOYD in the burn wallet to the dead address?")) return;
+  $("#bh").disabled = true; say($("#hm"), "Burning…");
+  try { const v = await call("burn-held"); render(v); $("#hm").className = "msg ok"; $("#hm").innerHTML = `🔥 Burned ${nf(v.done.tokens)} $VOYD. <a href="${TX + esc(v.done.tx)}" target="_blank" rel="noopener">View tx</a>`; }
+  catch (x) { say($("#hm"), x.message, "bad"); }
+  $("#bh").disabled = false;
+};
+$("#cf").onsubmit = async (e) => {
+  e.preventDefault(); say($("#cm"), "Making…");
+  try { const j = await call("code", { label: $("#cl").value.trim() || "team" }); $("#cm").className = "msg ok"; $("#cm").innerHTML = `Code: <b>${esc(j.code)}</b><br>npm i -g https://voydagent.com/voyd-agent.tgz<br>voyd login ${esc(j.code)}`; } catch (x) { say($("#cm"), x.message, "bad"); }
+};
+async function sites(remove) {
+  try {
+    const j = await call("sites", remove ? { remove } : {});
+    $("#sites").innerHTML = j.sites.length ? j.sites.map((x) => `<tr><td><a href="/s/${esc(x.name)}/" target="_blank" rel="noopener">${esc(x.name)}</a></td><td>${esc(String(x.wallet).slice(0, 10))}…</td><td>${(x.bytes / 1024).toFixed(0)} KB</td><td><button type="button" class="ghost" data-rm="${esc(x.name)}" style="padding:6px 12px">Remove</button></td></tr>`).join("") : '<tr><td colspan="4" style="color:var(--mute)">Nothing shipped yet.</td></tr>';
+  } catch {}
+}
+$("#sites").addEventListener("click", (e) => { const b = e.target.closest("[data-rm]"); if (b && confirm("Remove voydagent.com/s/" + b.dataset.rm + "?")) sites(b.dataset.rm); });
+if (KEY) refresh();
+setInterval(() => { if (S && !document.hidden) refresh(); }, 60_000);
+</script>
+</body></html>

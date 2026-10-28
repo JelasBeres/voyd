@@ -1,0 +1,388 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>VOYD videos</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,700;0,800;0,900;1,800;1,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0A;--deep:#050505;--card:#121212;--raise:#1C1C1C;--fg:#F5F5F5;--mute:#A3A3A3;--faint:#5C5C5C;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.22)}
+*{box-sizing:border-box}html,body{margin:0;background:#000}
+#st{position:relative;width:1600px;height:900px;background:var(--bg);overflow:hidden;color:var(--fg);font:400 24px/1.5 "Inter Tight",sans-serif;-webkit-font-smoothing:antialiased}
+.ab{position:absolute}.mono{font-family:"JetBrains Mono",monospace}
+.big{font-weight:900;letter-spacing:-.04em;line-height:1}
+.it{font-style:italic;font-weight:900;color:var(--mute)}
+.g{color:var(--mute)}.f{color:var(--faint)}
+canvas.bgc{position:absolute;inset:0;width:1600px;height:900px}
+.term{background:rgba(5,5,5,.94);border:1px solid var(--line2);border-radius:20px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.8)}
+.term .bar{display:flex;align-items:center;gap:10px;height:52px;padding:0 22px;border-bottom:1px solid var(--line);font:400 17px "JetBrains Mono";color:var(--faint)}
+.term .bar s{width:13px;height:13px;border-radius:50%;background:var(--raise);border:1px solid var(--line2)}
+.term .bd{padding:26px 30px;font:400 25px/1.75 "JetBrains Mono";white-space:pre-wrap;overflow-wrap:anywhere}
+.cur{display:inline-block;width:.6em;height:1.1em;vertical-align:-.2em;background:#fff}
+.card{border:1px solid var(--line2);border-radius:20px;background:var(--card)}
+.pill{display:inline-block;padding:8px 18px;border:1px solid var(--line2);border-radius:999px;font:400 20px "JetBrains Mono";color:var(--mute)}
+.end{position:absolute;inset:0;background:var(--bg);display:grid;place-items:center;text-align:center}
+.wm{position:absolute;right:44px;bottom:36px;font:400 18px "JetBrains Mono";color:var(--mute);display:flex;align-items:center;gap:12px}
+.wm svg{width:26px;height:26px}
+</style></head><body><div id="st"></div>
+<script>
+const V = (c = "#FFFFFF", w = 20) => `<svg viewBox="0 0 256 256"><g transform="translate(0 -6)" fill="none" stroke="${c}" stroke-width="${w}" stroke-miterlimit="10"><path d="M29.85 44 L128 214 L226.15 44"/><path d="M63.34 44 L128 156 L192.66 44"/><path d="M96.82 44 L128 98 L159.18 44"/></g></svg>`;
+const st = document.getElementById("st");
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const p = (t, a, b) => cl((t - a) / (b - a));
+const E = (k) => 1 - Math.pow(1 - k, 3);
+const typed = (s, k) => s.slice(0, Math.round(s.length * cl(k)));
+const show = (el, k, dy = 24) => { el.style.opacity = k; el.style.transform = `translateY(${(1 - E(k)) * dy}px)`; };
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const $ = (id) => document.getElementById(id);
+const WM = `<div class="wm" id="wm">${V()}voydagent.com</div>`;
+
+// the code tunnel, drawn from time alone so every frame is reproducible. speed = how fast you dive
+const CODE = ["contract Frog is ERC20 {", "await deploy('Frog')", "audit: no hidden mint ✓", "voyd launch --ticker FROG", "emit Transfer(from, DEAD)", "✓ frog.voyd.site is live", "the voyd is listening", "const site = await build(sentence)"];
+function tunnel(cv, z, alpha = 1, light = 0, dot = .55) {
+  const D = 1.2, x = cv.getContext("2d"); if (cv.width !== 1600 * D) { cv.width = 1600 * D; cv.height = 900 * D; }
+  x.setTransform(D, 0, 0, D, 0, 0); x.fillStyle = "#0A0A0A"; x.fillRect(0, 0, 1600, 900); x.globalAlpha = alpha;
+  const cx = 800, cy = 450, N = 16;
+  x.font = "15px 'JetBrains Mono'"; x.textAlign = "center";
+  for (let i = N; i >= 0; i--) {
+    const d = ((i - z) % N + N) % N + .35, s = 1 / d, R = 900 * s;
+    if (R < 6) continue;
+    const a = Math.min(1, 2.2 / d) * Math.min(1, d / 1.2);
+    x.strokeStyle = `rgba(255,255,255,${.5 * a})`; x.lineWidth = Math.max(.6, 2.2 * s); x.beginPath(); x.arc(cx, cy, R, 0, 7); x.stroke();
+    // code written on the walls between rings
+    x.fillStyle = `rgba(255,255,255,${.22 * a})`;
+    for (let k = 0; k < 10; k++) { const th = k / 10 * Math.PI * 2 + i * .7, rr = R * .93; x.save(); x.translate(cx + Math.cos(th) * rr, cy + Math.sin(th) * rr); x.rotate(th + Math.PI / 2); x.scale(s * 2.2, s * 2.2); x.fillText(CODE[(i + k) % CODE.length], 0, 0); x.restore(); }
+  }
+  // the light at the end
+  const er = 26 + light * 1100; x.globalAlpha = Math.min(1, dot + light); x.fillStyle = "#fff"; x.beginPath(); x.arc(cx, cy, er, 0, 7); x.fill();
+  // streaks while diving fast
+  x.globalAlpha = alpha * .5; x.strokeStyle = "#fff"; x.lineWidth = 1.4;
+  for (let k = 0; k < 70; k++) { const th = k * 2.3999, ph = ((k * .137 + z * .9) % 1), r0 = 60 + ph * ph * 1100, len = 30 + ph * 160; x.beginPath(); x.moveTo(cx + Math.cos(th) * r0, cy + Math.sin(th) * r0); x.lineTo(cx + Math.cos(th) * (r0 + len), cy + Math.sin(th) * (r0 + len)); x.stroke(); }
+  x.globalAlpha = 1;
+}
+
+function endCard(from, line2 = "Something real comes back.") {
+  return {
+    html: `<div class="end" id="end" style="opacity:0"><div><div style="width:150px;height:150px;margin:0 auto">${V()}</div>
+      <p class="big" style="margin:44px 0 0;font-size:104px">Speak into the voyd.<br><span class="it">${line2}</span></p>
+      <p class="mono" style="margin:38px 0 0;font-size:26px;color:var(--mute)">voydagent.com <span class="f">·</span> <span style="color:#fff">$VOYD</span></p></div></div>`,
+    seek: (t) => { const k = p(t, from, from + .6); $("end").style.opacity = k; $("end").firstElementChild.style.transform = `scale(${.96 + .04 * E(k)})`; },
+  };
+}
+
+const S = {};
+
+/* 1 · hook: one sentence goes in, a launched project comes back */
+S.speak = (() => {
+  const cmd = 'voyd "a landing site for $FROG: chill pixel frog, black and green"', end = endCard(13.2);
+  const steps = ["look       .", "writing    index.html", "hero · how to buy · CA placeholder", "voyd preview → localhost", "voyd ship frog"];
+  return { dur: 17, html: `<canvas class="bgc" id="cv"></canvas>
+    <div class="ab" id="hk" style="inset:0;display:grid;place-items:center;text-align:center"><p class="big" style="margin:0;font-size:120px">I typed <span class="it">one</span> sentence.</p></div>
+    <div class="ab term" id="tm" style="left:180px;right:180px;top:250px;opacity:0"><div class="bar"><s></s><s></s><s></s><span style="margin-left:10px">~/frog — voyd</span></div><div class="bd" id="tb"></div></div>
+    <div class="ab mono" id="log" style="left:0;right:0;top:640px;text-align:center;font-size:28px;color:#fff"></div>
+    <div class="ab" id="back" style="inset:0;opacity:0;background:var(--bg)"><div style="position:absolute;left:120px;right:120px;top:120px">
+      <p class="big" style="margin:0;font-size:132px">It came back.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:60px">
+        ${[["file", "index.html · 16.8 KB"], ["preview", "voyd preview ✓"], ["live link", "voydagent.com/s/frog"], ["next", "voyd brand · voyd roast"]].map((r, i) => `<div class="card" id="r${i}" style="padding:30px 28px;opacity:0"><p class="mono f" style="margin:0;font-size:20px">${r[0]}</p><p style="margin:14px 0 0;font-size:31px;font-weight:700;letter-spacing:-.02em">${r[1]}</p></div>`).join("")}
+      </div><p class="big" id="sec" style="margin:70px 0 0;font-size:96px;opacity:0">in <span class="it">83 seconds.</span></p></div></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      show($("hk"), p(t, 0, .4) * (1 - p(t, 1.6, 2)));
+      const tk = p(t, 2, 2.4) * (1 - p(t, 5.2, 5.8));
+      $("tm").style.opacity = tk; $("tm").style.transform = `scale(${1 - p(t, 5.2, 5.8) * .6}) translateY(${(1 - E(p(t, 2, 2.4))) * 30}px)`;
+      $("tb").innerHTML = `<span class="f">~/frog $</span> ${esc(typed(cmd, p(t, 2.3, 4.4)))}<span class="cur"></span>`;
+      const dive = p(t, 5, 9.6), z = t < 5 ? t * .6 : 3 + (t - 5) * (2 + 9 * Math.sin(Math.PI * dive));
+      tunnel($("cv"), z, .35 + .65 * Math.sin(Math.PI * dive) + (t < 5 ? .1 : 0), E(p(t, 8.9, 9.8)), .55 * p(t, 1.9, 2.4));
+      const si = Math.floor(p(t, 5.8, 9) * steps.length);
+      $("log").textContent = t > 5.8 && t < 9.1 ? steps[Math.min(steps.length - 1, si)] : ""; $("log").style.opacity = t > 5.8 && t < 9.1 ? 1 : 0;
+      $("back").style.opacity = p(t, 9.6, 10); for (let i = 0; i < 4; i++) show($("r" + i), p(t, 10.3 + i * .25, 10.8 + i * .25));
+      show($("sec"), p(t, 11.6, 12.1)); $("wm").style.opacity = 1 - p(t, 13, 13.4); end.seek(t);
+    } };
+})();
+
+/* 2 · it's live: CA lives in the caption, never in the video */
+S.live = (() => {
+  const end = endCard(14, "It came back live.");
+  const L = [["token", "$VOYD"], ["chain", "Robinhood Chain"], ["launchpad", "Pons"], ["contract", "→ in the caption ↓"]];
+  return { dur: 17.6, html: `<canvas class="bgc" id="cv"></canvas>
+    <div class="ab" id="h1" style="inset:0;display:grid;place-items:center;text-align:center"><div><p class="mono" style="margin:0;font-size:28px;letter-spacing:.3em;color:#fff">SOMETHING IS COMING BACK</p></div></div>
+    <div class="ab" id="big" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0;background:#fff;color:#0A0A0A"><div>
+      <p class="big" id="tick" style="margin:0;font-size:300px;line-height:.9">$VOYD</p>
+      <p class="big" style="margin:24px 0 0;font-size:64px">is live on Robinhood Chain.</p></div></div>
+    <div class="ab term" id="tm" style="left:220px;right:220px;top:200px;opacity:0"><div class="bar"><s></s><s></s><s></s><span style="margin-left:10px">~ — voyd</span></div><div class="bd" id="tb"></div></div>
+    <div class="ab" id="cap" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0;background:var(--bg)"><div>
+      <p class="mono g" style="margin:0;font-size:26px;letter-spacing:.24em">CONTRACT ADDRESS</p>
+      <p class="big" style="margin:22px 0 0;font-size:150px">CA is in<br>the <span class="it">caption.</span></p>
+      <div id="arr" style="margin:34px auto 0;width:90px;height:90px">${`<svg viewBox="0 0 90 90"><path d="M45 8 V74 M18 50 L45 78 L72 50" fill="none" stroke="#fff" stroke-width="9"/></svg>`}</div>
+      <p class="mono" style="margin:30px 0 0;font-size:22px;color:var(--mute)">only trust the CA posted by this account · not affiliated with Robinhood</p></div></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      const dive = p(t, 0, 3.2), z = t * 1.2 + 14 * dive * dive;
+      tunnel($("cv"), z, .5 + .5 * dive, E(p(t, 2.4, 3.3)), .55 * p(t, 2.5, 2.9));
+      $("h1").style.opacity = p(t, .2, .6) * (1 - p(t, 2.2, 2.6)); $("h1").style.letterSpacing = "";
+      // the light flips the screen white and the ticker lands
+      const b = p(t, 3.2, 3.4) * (1 - p(t, 6.4, 6.8)); $("big").style.opacity = b;
+      const kk = E(p(t, 3.2, 3.9)); $("tick").style.transform = `scale(${1.6 - .6 * kk})`; $("tick").style.filter = t > 3.2 && t < 3.6 && Math.floor(t * 20) % 2 ? "blur(2px)" : "none";
+      $("tm").style.opacity = p(t, 6.7, 7.1) * (1 - p(t, 10.7, 11)); $("tm").style.transform = `translateY(${(1 - E(p(t, 6.7, 7.1))) * 30}px)`;
+      const cmd = "cat launch.txt";
+      let h = `<span class="f">~ $</span> ${esc(typed(cmd, p(t, 7, 8)))}`;
+      if (t > 8.2) h += "\n\n" + L.filter((_, i) => t > 8.4 + i * .45).map(([a, b2], i) => `<span class="f">  ${a.padEnd(10)}</span> ${i === 3 ? `<b style="background:#fff;color:#000;padding:0 8px">${b2}</b>` : b2}`).join("\n");
+      if (t > 10.2) h += `\n\n<span>✓ it came back.</span>`;
+      $("tb").innerHTML = h + '<span class="cur"></span>';
+      $("cap").style.opacity = p(t, 10.8, 11.2); $("arr").style.transform = `translateY(${Math.abs(Math.sin(t * 5)) * 22}px)`;
+      $("wm").style.opacity = 1 - p(t, 13.8, 14.2); end.seek(t);
+    } };
+})();
+
+/* 3 · other AI vs VOYD, same prompt */
+S.vs = (() => {
+  const end = endCard(13.6, "One comes back."), q = '"a token site with staking"';
+  const code = ["import { ethers } from 'ethers'", "contract Token is ERC20 {", "  constructor() ERC20('Frog','FROG') {", "    _mint(msg.sender, 1e27);", "  }", "}", "function stake(uint256 a) external {", "  require(a > 0);", "  // TODO: audit this", "  balances[msg.sender] += a;", "}", "<!-- index.html -->", "<div class=\"hero\">...", "/* 847 more lines */"];
+  const todo = ["set up hosting", "fix the bugs", "make it responsive", "make a logo", "write the copy", "deploy it yourself"];
+  return { dur: 17, html: `
+    <div class="ab" style="left:0;top:0;width:800px;height:900px;border-right:1px solid var(--line);background:var(--deep)"></div>
+    <p class="ab mono g" style="left:60px;top:46px;margin:0;font-size:22px;letter-spacing:.18em">OTHER AI AGENTS</p>
+    <p class="ab mono" style="left:860px;top:46px;margin:0;font-size:22px;letter-spacing:.18em;display:flex;gap:12px;align-items:center"><span style="width:26px;height:26px;display:inline-block">${V()}</span>VOYD</p>
+    <div class="ab mono" id="lq" style="left:60px;top:110px;font-size:24px"></div><div class="ab mono" id="rq" style="left:860px;top:110px;font-size:24px"></div>
+    <div class="ab mono" id="lc" style="left:60px;top:170px;width:680px;height:360px;overflow:hidden;font-size:19px;line-height:1.6;color:var(--mute);white-space:pre"></div>
+    <div class="ab" id="lt" style="left:60px;top:560px;width:680px;opacity:0"><p style="margin:0;font-size:34px;font-weight:800;letter-spacing:-.02em">"Here's your code! 👍 Now:"</p>
+      <div style="margin-top:14px;font:400 22px/1.7 'JetBrains Mono';color:var(--mute)">${todo.map((x, i) => `<div id="td${i}" style="opacity:0">☐ ${x}</div>`).join("")}</div></div>
+    <div class="ab mono" id="rl" style="left:860px;top:180px;width:680px;font-size:22px;line-height:1.9"></div>
+    <div class="ab card" id="rc" style="left:860px;top:470px;width:680px;padding:34px;opacity:0">
+      <p class="big" style="margin:0;font-size:64px">✓ It's live.</p>
+      <p class="mono" style="margin:18px 0 0;font-size:22px;line-height:1.9;color:var(--mute)">voydagent.com/s/frog ↗<br>one sentence · one command<br>next: voyd brand · voyd roast</p></div>
+    <div class="ab" id="fin" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0;background:rgba(10,10,10,.92)"><p class="big" style="margin:0;font-size:116px">One stops at code.<br><span class="it">One comes back.</span></p></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      const qq = esc(typed(q, p(t, .3, 1.6)));
+      $("lq").innerHTML = `<span class="f">$</span> ai ${qq}`; $("rq").innerHTML = `<span class="f">$</span> voyd ${qq}`;
+      const n = Math.floor(p(t, 2, 5.5) * code.length); $("lc").textContent = code.slice(0, n).join("\n");
+      $("lc").scrollTop = p(t, 4, 6) * 80;
+      $("lt").style.opacity = p(t, 6, 6.4); todo.forEach((_, i) => $("td" + i).style.opacity = p(t, 6.6 + i * .45, 6.9 + i * .45));
+      const R = ["◆ the voyd is listening", "  ◇ look    .", "  ◇ write   index.html (16.8 KB)", "✓ it came back in 83s", "$ voyd ship frog"];
+      $("rl").innerHTML = R.filter((_, i) => t > 2 + i * .7).map((x) => esc(x)).join("<br>");
+      show($("rc"), p(t, 5.8, 6.3)); $("rc").style.transform += ` scale(${1 + .04 * Math.sin(Math.PI * p(t, 5.8, 6.6))})`;
+      $("fin").style.opacity = p(t, 10.4, 10.9); $("wm").style.opacity = 1 - p(t, 13.4, 13.8); end.seek(t);
+    } };
+})();
+
+/* 4 · things people said into the voyd */
+S.said = (() => {
+  const end = endCard(14.6, "What will you say?");
+  const Q = [["a casino, but for frogs", "voydagent.com/s/frogcasino", "dangerously based"],
+    ["a website that just says gm", "voydagent.com/s/gm · 1 page", "perfect. no notes."],
+    ["an NFT of my cat's disappointed face", "voydagent.com/s/sadcat · mint page", "main character launch"],
+    ["make me rich", "the voyd builds things.", "it doesn't print money."]];
+  return { dur: 18, html: `<canvas class="bgc" id="cv"></canvas>
+    <div class="ab" id="ti" style="inset:0;display:grid;place-items:center;text-align:center"><p class="big" style="margin:0;font-size:110px">Things people said<br><span class="it">into the voyd.</span></p></div>
+    ${Q.map((x, i) => `<div class="ab" id="q${i}" style="left:140px;right:140px;top:270px;opacity:0">
+      <p class="mono g" style="margin:0;font-size:24px">#${i + 1} · someone typed</p>
+      <p class="big" style="margin:18px 0 0;font-size:${x[0].length > 26 ? 80 : 96}px">"${x[0]}"</p>
+      <div class="card" style="margin-top:50px;padding:30px 34px;display:flex;justify-content:space-between;gap:30px;align-items:center;background:rgba(18,18,18,.94)">
+        <span class="mono" style="font-size:26px">${i === 3 ? "" : "✓ "}${x[1]}</span><span class="pill" style="color:#fff;border-color:#fff">verdict: ${x[2]}</span></div></div>`).join("")}
+    ${WM}${end.html}`,
+    seek(t) {
+      tunnel($("cv"), t * 1.4, .35, 0, 0);
+      show($("ti"), p(t, 0, .4) * (1 - p(t, 2, 2.4)));
+      Q.forEach((_, i) => { const a = 2.6 + i * 3, k = p(t, a, a + .35) * (1 - p(t, a + 2.6, a + 2.9)); $("q" + i).style.opacity = k; $("q" + i).style.transform = `scale(${.94 + .06 * E(p(t, a, a + .4))})`; });
+      $("wm").style.opacity = 1 - p(t, 14.4, 14.8); end.seek(t);
+    } };
+})();
+
+/* 5 · voyd roast: brutally honest, then it fixes it */
+S.roast = (() => {
+  const end = endCard(13.4, "Then it fixes it.");
+  const R = ["4 fonts in the hero. Pick one.", "Buy button is the same color as the background. Bold.", "Loading time: yes.", "Roadmap says Q3 2023. It's 2026."];
+  return { dur: 16.8, html: `
+    <div class="ab term" style="left:120px;top:90px;width:820px;height:720px"><div class="bar"><s></s><s></s><s></s><span style="margin-left:10px">~ — voyd</span></div><div class="bd" id="tb" style="font-size:23px"></div></div>
+    <div class="ab card" id="site" style="left:1000px;top:150px;width:480px;height:600px;overflow:hidden;background:#161616">
+      <div style="height:38px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center;padding:0 14px"><s style="width:10px;height:10px;border-radius:50%;background:#333"></s><s style="width:10px;height:10px;border-radius:50%;background:#333"></s><span class="mono f" style="font-size:14px;margin-left:8px">mytoken-moon.xyz</span></div>
+      <div id="old" style="padding:26px"><p style="margin:0;font:700 40px/1 Georgia;letter-spacing:.06em">TO THE <i style="font-family:cursive">MOON</i></p><p style="margin:12px 0 0;font:400 20px Courier">BEST TOKEN!!! 1000X</p><div style="margin-top:24px;width:180px;height:50px;background:#1b1b1b;border:1px dashed #2a2a2a"></div><p style="margin:24px 0 0;font:400 16px Comic Sans MS,cursive;color:#777">Roadmap: Q3 2023 · CEX listing soon</p></div>
+      <div id="new" style="position:absolute;inset:38px 0 0;padding:34px;opacity:0;background:#0A0A0A"><p class="big" style="margin:0;font-size:54px">MOON</p><p style="margin:12px 0 0;font-size:20px;color:var(--mute)">A clean token page that loads in 0.4s.</p><div style="margin-top:28px;display:inline-block;padding:14px 24px;border-radius:999px;background:#fff;color:#000;font-weight:800;font-size:20px">Buy $MOON</div></div></div>
+    <div class="ab" id="score" style="left:1000px;top:770px;width:480px;text-align:center;font:900 44px 'Inter Tight'"></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      let h = `<span class="f">~ $</span> ${esc(typed("voyd roast mytoken-moon.xyz", p(t, .2, 1.6)))}`;
+      if (t > 1.9) h += "\n\n" + R.filter((_, i) => t > 2.2 + i * 1.3).map((x) => `🔥 ${esc(x)}`).join("\n\n");
+      if (t > 7.6) h += `\n\n<span class="f">score</span> <b>23/100</b>`;
+      if (t > 8.6) h += `\n\n<span class="f">~ $</span> ${esc(typed("voyd fix", p(t, 8.6, 9.3)))}`;
+      if (t > 9.8) h += `\n<span>✓ fixed. one font. a button you can see.</span>`;
+      $("tb").innerHTML = h + '<span class="cur"></span>';
+      const sh = t > 2.2 && t < 7.6 ? Math.sin(t * 40) * 3 * (Math.floor(t * 1.3) % 2) : 0; $("old").style.transform = `translateX(${sh}px)`;
+      $("new").style.opacity = p(t, 10, 10.6); $("score").textContent = t < 7.6 ? "" : t < 10.2 ? "23 / 100" : "91 / 100";
+      $("wm").style.opacity = 1 - p(t, 13.2, 13.6); end.seek(t);
+    } };
+})();
+
+/* 6 · echo: your project keeps talking while you sleep */
+S.sleep = (() => {
+  const end = endCard(13, "Echo · coming in Phase 03.");
+  const F = [["03:07", "Burn detected", "burn video posted"], ["03:41", "Whale entered · 1.8% of supply", "alert posted"], ["05:12", "Holder #500", "thank-you clip posted"], ["08:00", "Daily recap", "posted"]];
+  return { dur: 16.4, html: `
+    <div class="ab" id="clk" style="inset:0;display:grid;place-items:center;text-align:center"><div><p class="big" id="time" style="margin:0;font-size:260px;font-variant-numeric:tabular-nums">03:07</p><p class="big it" style="margin:10px 0 0;font-size:70px">You're asleep.</p></div></div>
+    <div class="ab" id="fd" style="left:300px;right:300px;top:150px;opacity:0">
+      <p class="mono" style="margin:0 0 20px;font-size:22px;letter-spacing:.2em;color:#fff">● ECHO · PREVIEW · PHASE 03</p>
+      ${F.map((x, i) => `<div class="card" id="e${i}" style="display:grid;grid-template-columns:110px 1fr auto;gap:20px;align-items:center;padding:24px 28px;margin-top:14px;opacity:0"><span class="mono f" style="font-size:22px">${x[0]}</span><span style="font-size:28px;font-weight:700">${x[1]}</span><span class="pill">${x[2]}</span></div>`).join("")}</div>
+    <div class="ab" id="wk" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0;background:var(--bg)"><p class="big" style="margin:0;font-size:110px">You woke up.<br><span class="it">Your project didn't sleep.</span></p></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      const m = Math.floor(3 * 60 + 7 + p(t, .6, 2.6) * 290); $("time").textContent = String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+      $("clk").style.opacity = 1 - p(t, 2.8, 3.2); $("fd").style.opacity = p(t, 3, 3.4) * (1 - p(t, 9.6, 10));
+      F.forEach((_, i) => show($("e" + i), p(t, 3.5 + i * 1.3, 3.9 + i * 1.3), 30));
+      $("wk").style.opacity = p(t, 9.8, 10.3); $("wm").style.opacity = 1 - p(t, 12.8, 13.2); end.seek(t);
+    } };
+})();
+
+/* 7 · tiers as ranks: hold more, the voyd answers more */
+S.tiers = (() => {
+  const end = endCard(12.4, "Hold it to speak.");
+  const T = [["0.1%", "Whisper", "build · ship · audit · roast · fix · brand"], ["0.5%", "Echo", "+ voyd launch · voyd video"], ["1%", "Voydwalker", "+ Echo 24/7 · a mascot on X"]];
+  return { dur: 15.8, html: `<canvas class="bgc" id="cv"></canvas>
+    <div class="ab" id="ti" style="inset:0;display:grid;place-items:center;text-align:center"><p class="big" style="margin:0;font-size:120px">The voyd has <span class="it">ranks.</span></p></div>
+    ${T.map((x, i) => `<div class="ab" id="t${i}" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0"><div>
+      <p class="mono g" style="margin:0;font-size:26px;letter-spacing:.24em">RANK ${i + 1} · HOLD ${x[0]} OF SUPPLY</p>
+      <p class="big" style="margin:20px 0 0;font-size:${i === 2 ? 190 : 210}px">${x[1]}</p>
+      <p class="mono" style="margin:24px 0 0;font-size:28px">${x[2]}</p><p class="mono" id="u${i}" style="margin:30px 0 0;font-size:24px;letter-spacing:.3em;color:#000;background:#fff;display:inline-block;padding:6px 16px">${["LIVE NOW", "PHASE 02", "PHASE 03"][i]}</p></div></div>`).join("")}
+    ${WM}${end.html}`,
+    seek(t) {
+      const seg = p(t, 2.2, 11.6) * 3, f = seg % 1, warp = t > 2.2 && t < 11.6 ? Math.pow(Math.max(0, Math.sin(Math.PI * f)), 6) : 0;
+      tunnel($("cv"), t * .8 + seg * 6, .3 + warp * .6, 0, 0);
+      show($("ti"), p(t, 0, .4) * (1 - p(t, 1.8, 2.2)));
+      T.forEach((_, i) => { const a = 2.2 + i * 3.13, k = p(t, a + .3, a + .6) * (1 - p(t, a + 2.7, a + 3)); $("t" + i).style.opacity = k; $("t" + i).style.transform = `scale(${.9 + .1 * E(p(t, a + .3, a + .8))})`; $("u" + i).style.opacity = p(t, a + 1.3, a + 1.5); });
+      $("wm").style.opacity = 1 - p(t, 12.2, 12.6); end.seek(t);
+    } };
+})();
+
+/* 8 · real: the page VOYD actually built from one sentence, unedited */
+S.real = (() => {
+  const end = endCard(15.2, "Your turn."), q = 'voyd "a one-page landing site for a meme token called $FROG: a chill pixel frog, black and green, a how-to-buy section and a CA placeholder"';
+  return { dur: 18.6, html: `<canvas class="bgc" id="cv"></canvas>
+    <div class="ab" id="hk" style="inset:0;display:grid;place-items:center;text-align:center"><div><p class="big" style="margin:0;font-size:116px">We typed <span class="it">one</span> sentence.</p><p class="mono g" style="margin:26px 0 0;font-size:26px">this is exactly what came back. no edits.</p></div></div>
+    <div class="ab term" id="tm" style="left:150px;right:150px;top:240px;opacity:0"><div class="bar"><s></s><s></s><s></s><span style="margin-left:10px">~/frog — voyd</span></div><div class="bd" id="tb" style="font-size:23px"></div></div>
+    <div class="ab" id="br" style="left:250px;right:250px;top:70px;bottom:110px;opacity:0;border:1px solid var(--line2);border-radius:16px;overflow:hidden;background:#000;box-shadow:0 50px 120px rgba(0,0,0,.8)">
+      <div style="height:46px;display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid var(--line);background:#111"><s style="width:12px;height:12px;border-radius:50%;background:#2a2a2a"></s><s style="width:12px;height:12px;border-radius:50%;background:#2a2a2a"></s><s style="width:12px;height:12px;border-radius:50%;background:#2a2a2a"></s>
+        <span class="mono" style="margin-left:18px;flex:1;height:30px;border-radius:999px;background:#1a1a1a;display:flex;align-items:center;padding:0 16px;font-size:16px;color:var(--mute)">🔒 voydagent.com/s/frog</span></div>
+      <div style="position:absolute;left:0;right:0;top:46px;bottom:0;overflow:hidden"><img id="pg" src="real/frog-full.jpg" style="display:block;width:100%"></div></div>
+    <div class="ab mono" id="tag" style="left:0;right:0;bottom:46px;text-align:center;font-size:22px;opacity:0">unedited · 1 sentence · 83 seconds · built by VOYD AI</div>
+    ${WM}${end.html}`,
+    seek(t) {
+      tunnel($("cv"), t * .9, .3, 0, 0);
+      show($("hk"), p(t, 0, .4) * (1 - p(t, 2, 2.4)));
+      $("tm").style.opacity = p(t, 2.4, 2.8) * (1 - p(t, 5.6, 6)); $("tm").style.transform = `scale(${1 - p(t, 5.6, 6) * .08})`;
+      let h = `<span class="f">~/frog $</span> ${esc(typed(q, p(t, 2.6, 4.2)))}`;
+      if (t > 4.3) h += `\n\n<span class="g">◆ the voyd is listening</span>\n  ◇ look    .`;
+      if (t > 4.8) h += `\n  ◇ write   index.html  (16.8 KB)`;
+      if (t > 5.2) h += `\n<b>✓ it came back in 83s · 1 file written</b>`;
+      $("tb").innerHTML = h + '<span class="cur"></span>';
+      const b = p(t, 5.8, 6.3) * (1 - p(t, 14.6, 15)); $("br").style.opacity = b; $("br").style.transform = `translateY(${(1 - E(p(t, 5.8, 6.4))) * 60}px)`;
+      const img = $("pg"), frame = img.parentElement.clientHeight, max = Math.max(0, img.clientHeight - frame);
+      const k = p(t, 7, 14.2), eased = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      img.style.transform = `translateY(${-eased * max}px)`;
+      $("tag").style.opacity = p(t, 6.6, 7) * (1 - p(t, 14.6, 15));
+      $("wm").style.opacity = 1 - p(t, 15, 15.4); end.seek(t);
+    } };
+})();
+
+/* 9 · open: holders get in */
+S.open = (() => {
+  const end = endCard(13.4, "voydagent.com/docs");
+  const lines = [["npm i -g https://voydagent.com/voyd-agent.tgz", "added 1 package"], ["voyd login VOYD-·····-·····-·····-·····", "✓ signed in · 0x8f3a…c21 holds $VOYD"], ['voyd "anything"', ""]];
+  return { dur: 16.6, html: `<canvas class="bgc" id="cv"></canvas>
+    <div class="ab" id="hk" style="inset:0;display:grid;place-items:center;text-align:center;background:#fff;color:#0A0A0A;opacity:0"><p class="big" style="margin:0;font-size:150px">The voyd<br>is open.</p></div>
+    <div class="ab" id="stp" style="left:140px;right:140px;top:170px;opacity:0;display:grid;grid-template-columns:repeat(3,1fr);gap:22px">
+      ${[["01", "Hold", "0.1% of $VOYD"], ["02", "Sign", "one message · free · sends nothing"], ["03", "Get your code", "VOYD-·····-·····-…"]].map((x, i) => `<div class="card" id="s${i}" style="padding:34px 30px;opacity:0"><p class="mono f" style="margin:0;font-size:22px">${x[0]}</p><p class="big" style="margin:20px 0 0;font-size:56px">${x[1]}</p><p class="mono g" style="margin:16px 0 0;font-size:20px">${x[2]}</p><p class="mono" id="ok${i}" style="margin:22px 0 0;font-size:24px;opacity:0">✓</p></div>`).join("")}</div>
+    <div class="ab term" id="tm" style="left:170px;right:170px;top:250px;opacity:0"><div class="bar"><s></s><s></s><s></s><span style="margin-left:10px">~ — terminal</span></div><div class="bd" id="tb" style="font-size:26px"></div></div>
+    <div class="ab" id="hs" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0;background:var(--bg)"><p class="big" style="margin:0;font-size:150px">Hold. Sign.<br><span class="it">Speak.</span></p></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      tunnel($("cv"), t * 1.1, .35, 0, 0);
+      $("hk").style.opacity = p(t, 0, .25) * (1 - p(t, 1.9, 2.2)); $("hk").firstElementChild.style.transform = `scale(${1.15 - .15 * E(p(t, 0, .6))})`;
+      $("stp").style.opacity = p(t, 2.2, 2.5) * (1 - p(t, 5.7, 6));
+      for (let i = 0; i < 3; i++) { show($("s" + i), p(t, 2.4 + i * .8, 2.8 + i * .8), 30); $("ok" + i).style.opacity = p(t, 2.9 + i * .8, 3.1 + i * .8); }
+      $("tm").style.opacity = p(t, 6, 6.3) * (1 - p(t, 10.4, 10.7));
+      let h = ""; lines.forEach(([c, o], i) => { const a = 6.3 + i * 1.3; if (t < a) return; h += `<span class="f">~ $</span> ${esc(typed(c, p(t, a, a + .7)))}` + (o && t > a + .9 ? `\n<span class="g">  ${esc(o)}</span>\n` : "\n"); });
+      $("tb").innerHTML = h.replace(/\n$/, "") + '<span class="cur"></span>';
+      $("hs").style.opacity = p(t, 10.6, 11); $("wm").style.opacity = 1 - p(t, 13.2, 13.6); end.seek(t);
+    } };
+})();
+
+/* 10 · speedrun: memecoin website, any% */
+S.speedrun = (() => {
+  const end = endCard(13.6, "Beat it.");
+  const SPL = [["sentence typed", 6.2], ["index.html written", 89.0], ["voyd preview", 93.4], ["voyd ship → live", 98.9]];
+  const fmt = (s) => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, "0")}`;
+  return { dur: 17, html: `
+    <div class="ab" style="left:80px;top:60px"><p class="mono g" style="margin:0;font-size:22px;letter-spacing:.22em">SPEEDRUN · MEMECOIN WEBSITE · ANY%</p><p class="mono f" style="margin:10px 0 0;font-size:18px">category: terminal · runner: one sentence · video sped up</p></div>
+    <div class="ab term" style="left:80px;top:170px;width:820px;height:640px"><div class="bar"><s></s><s></s><s></s><span style="margin-left:10px">~/run — voyd</span></div><div class="bd" id="tb" style="font-size:22px"></div></div>
+    <div class="ab card" style="left:960px;top:170px;width:560px;padding:28px 30px">
+      <p class="mono g" style="margin:0 0 14px;font-size:18px;letter-spacing:.18em">SPLITS</p>
+      ${SPL.map((x, i) => `<div id="sp${i}" class="mono" style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line);font-size:22px;opacity:.35"><span>${x[0]}</span><b id="st${i}">–</b></div>`).join("")}
+      <p class="big" id="clock" style="margin:26px 0 0;font-size:110px;text-align:right;font-variant-numeric:tabular-nums">0:00.0</p>
+      <p class="big" id="pb" style="margin:6px 0 0;font-size:40px;text-align:right;opacity:0">✓ NEW PB</p></div>
+    <div class="ab" id="fin" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0;background:rgba(10,10,10,.94)"><div><p class="mono g" style="margin:0;font-size:26px;letter-spacing:.2em">FINAL TIME</p><p class="big" style="margin:16px 0 0;font-size:200px">1:38.9</p><p class="big it" style="margin:8px 0 0;font-size:56px">from idea to a live link.</p></div></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      // 1 second of video = about 9 seconds of run time, after the sentence is typed
+      const run = t < 1.5 ? 0 : t < 2.6 ? (t - 1.5) / 1.1 * 6.2 : Math.min(98.9, 6.2 + (t - 2.6) * 11.2);
+      $("clock").textContent = fmt(run);
+      SPL.forEach((s, i) => { const done = run >= s[1]; $("sp" + i).style.opacity = done ? 1 : .35; $("st" + i).textContent = done ? fmt(s[1]) : "–"; });
+      let h = `<span class="f">~/run $</span> ${esc(typed('voyd "a landing site for $FROG"', p(t, 1.5, 2.6)))}`;
+      if (run > 6.2) h += `\n\n<span class="g">◆ the voyd is listening</span>\n  ◇ look    .`;
+      if (run > 60) h += `\n  ◇ write   index.html  (16.8 KB)`;
+      if (run >= 89) h += `\n<b>✓ it came back in 83s</b>\n\n<span class="f">~/run $</span> voyd preview\n  ✓ serving run on http://localhost:4321`;
+      if (run >= 93.4) h += `\n\n<span class="f">~/run $</span> voyd ship frog`;
+      if (run >= 98.9) h += `\n<b>✓ it's live: voydagent.com/s/frog</b>`;
+      $("tb").innerHTML = h + '<span class="cur"></span>';
+      $("pb").style.opacity = run >= 98.9 ? (Math.floor(t * 4) % 2 ? 1 : .35) : 0;
+      $("fin").style.opacity = p(t, 11.2, 11.6); $("wm").style.opacity = 1 - p(t, 13.4, 13.8); end.seek(t);
+    } };
+})();
+
+/* 11 · dev: POV, the quote vs the voyd */
+S.dev = (() => {
+  const end = endCard(13.6, "No hate to devs. We got impatient.");
+  const M = [[0, "me", "how long for a landing page for my token?"], [1.3, "dev", "2 weeks"], [2.2, "dev", "$3k"], [3, "dev", "50% upfront"], [3.9, "dev", "revisions are extra"]];
+  return { dur: 17, html: `
+    <p class="ab mono g" style="left:0;right:0;top:50px;margin:0;text-align:center;font-size:24px;letter-spacing:.2em">POV: YOU ASKED A DEV FOR A WEBSITE</p>
+    <div class="ab" style="left:360px;right:360px;top:130px;display:flex;flex-direction:column;gap:16px" id="chat">
+      ${M.map((m, i) => `<div id="m${i}" style="opacity:0;align-self:${m[1] === "me" ? "flex-end" : "flex-start"};max-width:640px;padding:16px 24px;border-radius:${m[1] === "me" ? "24px 24px 6px 24px" : "24px 24px 24px 6px"};background:${m[1] === "me" ? "#fff" : "#1C1C1C"};color:${m[1] === "me" ? "#000" : "#fff"};font-size:32px;font-weight:600">${m[2]}</div>`).join("")}
+      <div id="ty" class="mono g" style="opacity:0;font-size:22px">dev is typing…</div>
+      <div id="nv" style="opacity:0;align-self:flex-end;padding:16px 24px;border-radius:24px 24px 6px 24px;background:#fff;color:#000;font-size:32px;font-weight:600">nvm</div>
+      <div id="q" style="opacity:0;align-self:flex-start;padding:16px 24px;border-radius:24px 24px 24px 6px;background:#1C1C1C;font-size:32px;font-weight:600">?</div></div>
+    <div class="ab term" id="tm" style="left:220px;right:220px;top:230px;opacity:0"><div class="bar"><s></s><s></s><s></s><span style="margin-left:10px">~/frog — voyd · meanwhile</span></div><div class="bd" id="tb" style="font-size:26px"></div></div>
+    ${WM}${end.html}`,
+    seek(t) {
+      M.forEach((m, i) => show($("m" + i), p(t, .4 + m[0], .7 + m[0]), 16));
+      $("ty").style.opacity = t > 5 && t < 5.6 ? 1 : 0;
+      const tk = p(t, 5.6, 5.9) * (1 - p(t, 10, 10.3)); $("tm").style.opacity = tk; $("chat").style.opacity = 1 - tk;
+      let h = `<span class="f">~/frog $</span> ${esc(typed('voyd "a landing site for $FROG"', p(t, 6, 7)))}`;
+      if (t > 7.4) h += `\n  ◇ write   index.html  (16.8 KB)\n<b>✓ it came back in 83s</b>`;
+      if (t > 8.3) h += `\n\n<span class="f">~/frog $</span> ${esc(typed("voyd ship frog", p(t, 8.3, 8.9)))}`;
+      if (t > 9.2) h += `\n<b>✓ it's live: voydagent.com/s/frog</b>`;
+      $("tb").innerHTML = h + '<span class="cur"></span>';
+      show($("nv"), p(t, 10.6, 10.9), 16); show($("q"), p(t, 11.8, 12.1), 16);
+      $("wm").style.opacity = 1 - p(t, 13.4, 13.8); end.seek(t);
+    } };
+})();
+
+/* 12 · burn receipt: render with real numbers, ?no=1&n=1234567&usd=25&tx=0x1234…abcd */
+S.burn = (() => {
+  const q = new URLSearchParams(location.search), real = q.has("n");
+  const no = q.get("no") || "1", n = Number(q.get("n") || 1234567), usd = q.get("usd") || "25", tx = q.get("tx") || "0x0000…0000";
+  const end = endCard(10.4, "Every word feeds the voyd.");
+  return { dur: 13.4, html: `<canvas class="bgc" id="cv"></canvas>
+    <div class="ab" id="hk" style="inset:0;display:grid;place-items:center;text-align:center"><div><p class="mono" style="margin:0;font-size:28px;letter-spacing:.3em">BUYBACK &amp; BURN</p><p class="big" style="margin:10px 0 0;font-size:260px;line-height:.9">#${esc(no)}</p></div></div>
+    <div class="ab" id="rc" style="inset:0;display:grid;place-items:center;text-align:center;opacity:0"><div>
+      <p class="mono g" style="margin:0;font-size:26px;letter-spacing:.24em">$VOYD SENT INTO THE VOYD</p>
+      <p class="big" id="cnt" style="margin:18px 0 0;font-size:170px;font-variant-numeric:tabular-nums">0</p>
+      <p class="mono" style="margin:26px 0 0;font-size:26px">bought with $${esc(usd)} · sent to 0x000…dEaD · tx ${esc(tx)}</p></div></div>
+    ${real ? "" : `<p class="ab mono" style="left:0;right:0;top:30px;margin:0;text-align:center;font-size:22px;color:#000;background:#fff;padding:6px 0">PREVIEW · SAMPLE NUMBERS · DO NOT POST</p>`}
+    ${WM}${end.html}`,
+    seek(t) {
+      const fall = p(t, 1.6, 4.2); tunnel($("cv"), t * 1.2 + 10 * fall * fall, .4 + .5 * Math.sin(Math.PI * fall), .9 * Math.sin(Math.PI * p(t, 3.5, 4.7)), .55 * (1 - p(t, 4.4, 4.8)));
+      show($("hk"), p(t, 0, .4) * (1 - p(t, 1.8, 2.2)));
+      $("rc").style.opacity = p(t, 4.2, 4.6);
+      $("cnt").textContent = Math.round(n * E(p(t, 4.4, 7.2))).toLocaleString("en-US");
+      $("wm").style.opacity = 1 - p(t, 10.2, 10.6); end.seek(t);
+    } };
+})();
+
+const name = new URLSearchParams(location.search).get("s") || "speak";
+window.SCENE = S[name]; st.innerHTML = SCENE.html; SCENE.seek(+new URLSearchParams(location.search).get("t") || 0);
+</script></body></html>

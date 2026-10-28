@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>VOYD cards</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,700;0,800;0,900;1,900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#000}
+#c{position:relative;overflow:hidden;background:#0A0A0A;color:#F5F5F5;font:400 24px/1.4 "Inter Tight",sans-serif;-webkit-font-smoothing:antialiased}
+.big{font-weight:900;letter-spacing:-.04em;line-height:1;margin:0}.it{font-style:italic;color:#A3A3A3}
+.mono{font-family:"JetBrains Mono",monospace}.g{color:#A3A3A3}.f{color:#5C5C5C}
+.ring{position:absolute;border:1px solid rgba(255,255,255,.1);border-radius:50%;transform:translate(-50%,-50%)}
+.v{display:block}
+</style></head><body><div id="c"></div>
+<script>
+const V = (c = "#FFFFFF", w = 20) => `<svg class="v" viewBox="0 0 256 256"><g transform="translate(0 -6)" fill="none" stroke="${c}" stroke-width="${w}" stroke-miterlimit="10"><path d="M29.85 44 L128 214 L226.15 44"/><path d="M63.34 44 L128 156 L192.66 44"/><path d="M96.82 44 L128 98 L159.18 44"/></g></svg>`;
+const rings = (cx, cy, n, step, start = 120) => Array.from({ length: n }, (_, i) => { const d = start + i * step; return `<span class="ring" style="left:${cx}px;top:${cy}px;width:${d}px;height:${d}px;border-color:rgba(255,255,255,${.16 - i * .012})"></span>`; }).join("");
+const C = {
+  avatar: [800, 800, `<div style="position:absolute;inset:0;display:grid;place-items:center"><div style="width:440px;height:440px">${V()}</div></div>`],
+  "avatar-tunnel": [800, 800, `${Array.from({ length: 7 }, (_, i) => { const d = 400 + i * 62; return `<span class="ring" style="left:400px;top:400px;width:${d}px;height:${d}px;border:${i ? 2 : 3}px solid rgba(255,255,255,${(.62 - i * .07).toFixed(2)})"></span>`; }).join("")}<div style="position:absolute;inset:0;display:grid;place-items:center"><div style="width:300px;height:300px;margin-top:-10px">${V()}</div></div>`],
+  "avatar-code": [800, 800, `<svg style="position:absolute;inset:0" viewBox="0 0 800 800"><defs><path id="c1" d="M400,400 m-330,0 a330,330 0 1,1 660,0 a330,330 0 1,1 -660,0"/><path id="c2" d="M400,400 m-265,0 a265,265 0 1,1 530,0 a265,265 0 1,1 -530,0"/></defs>
+      <circle cx="400" cy="400" r="372" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2"/><circle cx="400" cy="400" r="296" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+      <text font-family="JetBrains Mono" font-size="25" fill="rgba(255,255,255,.42)" letter-spacing="3"><textPath href="#c1">voyd "one sentence" · something real comes back · voyd ship · voyd audit · voyd roast · </textPath></text>
+      <text font-family="JetBrains Mono" font-size="21" fill="rgba(255,255,255,.22)" letter-spacing="2"><textPath href="#c2" startOffset="12%">speak into the voyd · ✓ it came back · speak into the voyd · ✓ it came back</textPath></text></svg>
+    <div style="position:absolute;inset:0;display:grid;place-items:center"><div style="width:300px;height:300px;margin-top:-8px">${V()}</div></div>`],
+  "avatar-light": [800, 800, `<div style="position:absolute;inset:0;background:#fff"></div><div style="position:absolute;inset:0;display:grid;place-items:center"><div style="width:420px;height:420px">${V("#0A0A0A")}</div></div>`],
+  "avatar-cursor": [800, 800, `${rings(400, 400, 7, 110, 200)}<div style="position:absolute;inset:0;display:grid;place-items:center"><div style="display:flex;align-items:flex-end;gap:26px;margin-top:-10px"><div style="width:320px;height:320px">${V()}</div><div style="width:44px;height:92px;background:#fff;margin-bottom:58px"></div></div></div>`],
+  access: [1600, 900, `${rings(1300, 450, 9, 120, 160)}<div style="position:absolute;left:110px;top:110px;width:780px">
+    <p class="mono g" style="margin:0;font-size:26px;letter-spacing:.24em">HOLDERS · THE VOYD IS OPEN</p>
+    <p class="big" style="font-size:112px;margin-top:24px">Hold. Sign.<br><span class="it">Speak.</span></p></div>
+    <div style="position:absolute;left:110px;right:110px;bottom:100px;border:1px solid rgba(255,255,255,.22);border-radius:20px;background:rgba(5,5,5,.94);overflow:hidden">
+      <div style="height:46px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:9px;padding:0 20px"><s style="width:12px;height:12px;border-radius:50%;background:#1C1C1C;border:1px solid rgba(255,255,255,.22)"></s><s style="width:12px;height:12px;border-radius:50%;background:#1C1C1C;border:1px solid rgba(255,255,255,.22)"></s><s style="width:12px;height:12px;border-radius:50%;background:#1C1C1C;border:1px solid rgba(255,255,255,.22)"></s></div>
+      <div class="mono" style="padding:24px 30px;font-size:27px;line-height:1.8;white-space:pre"><span class="f"># 1. hold 0.1% of $VOYD · 2. voydagent.com/#access → sign (free)</span>
+<span class="f">~ $</span> npm i -g https://voydagent.com/voyd-agent.tgz
+<span class="f">~ $</span> voyd login VOYD-·····-·····-·····-·····
+<span class="f">~ $</span> voyd "anything" <span style="display:inline-block;width:16px;height:30px;background:#fff;vertical-align:-5px"></span></div></div>`],
+  banner: [1500, 500, `${rings(1170, 250, 10, 120, 160)}
+    <div style="position:absolute;left:380px;top:96px;width:470px"><p class="big" style="font-size:58px">Speak into<br>the voyd.</p><p class="big it" style="font-size:58px;margin-top:4px">Something real<br>comes back.</p>
+    <p class="mono g" style="margin:24px 0 0;font-size:19px">voydagent.com · $VOYD</p></div>
+    <div style="position:absolute;left:880px;top:58px;width:570px;border:1px solid rgba(255,255,255,.22);border-radius:16px;background:rgba(5,5,5,.94);overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.8)">
+      <div style="display:flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.12);font:400 13px 'JetBrains Mono';color:#5C5C5C"><s style="width:10px;height:10px;border-radius:50%;background:#1C1C1C;border:1px solid rgba(255,255,255,.22)"></s><s style="width:10px;height:10px;border-radius:50%;background:#1C1C1C;border:1px solid rgba(255,255,255,.22)"></s><s style="width:10px;height:10px;border-radius:50%;background:#1C1C1C;border:1px solid rgba(255,255,255,.22)"></s><span style="margin-left:8px">~/frog — voyd</span></div>
+      <div class="mono" style="padding:16px 20px 18px;font-size:15.5px;line-height:1.75;white-space:pre"><span class="f">~/frog $</span> voyd "a landing site for $FROG"
+<span class="g">◆ the voyd is listening</span>
+<span class="f">  look     </span> .
+<span class="f">  write    </span> index.html  (16.8 KB)
+<span class="f">           </span> hero · how to buy · CA
+<span class="f">~/frog $</span> voyd ship frog
+<b style="color:#fff">✓ it's live</b>
+<span class="f">  link     </span> voydagent.com/s/frog
+<span class="f">~/frog $</span> <span style="display:inline-block;width:9px;height:17px;background:#fff;vertical-align:-3px"></span></div></div>`],
+  og: [1200, 630, `${rings(960, 315, 9, 110, 120)}<div style="position:absolute;left:72px;top:72px;width:84px;height:84px">${V()}</div>
+    <div style="position:absolute;left:72px;bottom:80px"><p class="big" style="font-size:84px">Speak into the voyd.</p><p class="big it" style="font-size:84px;margin-top:4px">Something real comes back.</p>
+    <p class="mono g" style="margin:30px 0 0;font-size:24px">One sentence in your terminal → a launched project · voydagent.com</p></div>`],
+  live: [1600, 900, `<div style="position:absolute;inset:0;background:#fff;color:#0A0A0A;display:grid;place-items:center;text-align:center"><div>
+    <div style="width:110px;height:110px;margin:0 auto 40px">${V("#0A0A0A")}</div>
+    <p class="big" style="font-size:250px;line-height:.9">$VOYD</p><p class="big" style="font-size:64px;margin-top:22px">is live on Robinhood Chain.</p>
+    <p class="mono" style="margin:40px 0 0;font-size:28px">CA in the post ↓ · only trust this account</p></div></div>
+    <p class="mono" style="position:absolute;left:0;right:0;bottom:30px;margin:0;text-align:center;font-size:18px;color:#5C5C5C">voydagent.com · not affiliated with Robinhood</p>`],
+  summon: [1600, 900, `${rings(1260, 450, 10, 130, 140)}<div style="position:absolute;left:110px;top:150px;width:920px">
+    <p class="mono g" style="margin:0;font-size:26px;letter-spacing:.24em">DAILY SUMMON · DAY 1</p>
+    <p class="big" style="font-size:118px;margin-top:26px">Reply with <span class="it">one sentence.</span></p>
+    <p style="margin:36px 0 0;font-size:38px;line-height:1.35;color:#D4D4D4">The most-liked reply gets built with VOYD and shipped live at voydagent.com/s/…</p></div>`],
+  gm: [1600, 900, `<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div>
+    <p class="mono f" style="margin:0;font-size:28px">~ $ voyd "a website that just says gm"</p>
+    <p class="big" style="font-size:330px;margin-top:30px">gm.</p>
+    <p class="mono g" style="margin:30px 0 0;font-size:26px">✓ voydagent.com/s/gm · 1 page · one sentence</p></div></div>`],
+  wrong: [1600, 900, `<div style="position:absolute;inset:0;display:grid;place-items:center;text-align:center"><div>
+    <p class="mono g" style="margin:0;font-size:28px;letter-spacing:.2em">FINISH THE SENTENCE</p>
+    <p class="big" style="font-size:132px;margin-top:30px">voyd "<span class="it">a token for</span><span style="display:inline-block;width:70px;height:120px;background:#fff;vertical-align:-14px;margin-left:12px"></span>"</p>
+    <p style="margin:44px 0 0;font-size:34px;color:#D4D4D4">Best answer gets built. Worst answer gets roasted.</p></div></div>`],
+};
+const k = new URLSearchParams(location.search).get("c") || "og", [w, h, html] = C[k];
+const el = document.getElementById("c"); el.style.width = w + "px"; el.style.height = h + "px"; el.innerHTML = html;
+window.CARDS = Object.keys(C);
+</script></body></html>
