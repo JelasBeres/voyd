@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lore Previews</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,600;0,800;0,900;1,900&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+body{margin:0;background:#000;color:#fff;font:400 16px/1.6 "Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.idx{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:12px 16px;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font:500 12px "JetBrains Mono",monospace}
+.idx a{color:#bbb;text-decoration:none;padding:6px 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px}.idx a:hover{color:#fff;border-color:#fff}
+.c{position:relative;min-height:100vh;scroll-snap-align:start;display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,64px);align-items:center;padding:96px clamp(16px,5vw,80px) 64px;overflow:hidden}
+@media (max-width:900px){.c{grid-template-columns:1fr}}
+.c canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.l,.r{position:relative;z-index:1;min-width:0}
+.kick{font:500 12px "JetBrains Mono",monospace;letter-spacing:.22em;text-transform:uppercase;opacity:.75;margin:0}
+.name{margin:16px 0 0;font:900 clamp(64px,10vw,150px)/.9 "Inter Tight";letter-spacing:-.05em}
+.tag{margin:14px 0 0;font:900 italic clamp(24px,2.8vw,38px)/1.1 "Inter Tight";letter-spacing:-.02em;opacity:.8}
+.story{margin:22px 0 0;max-width:560px;font-size:17px;opacity:.86}
+.terms{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0}
+.terms span{font:500 12.5px "JetBrains Mono",monospace;padding:6px 12px;border:1px solid currentColor;border-radius:999px;opacity:.8}
+.post{margin:22px 0 0;max-width:520px;padding:16px 18px;border-radius:14px;font-size:15px;white-space:pre-line}
+.post b{display:block;font:500 11px "JetBrains Mono",monospace;letter-spacing:.18em;opacity:.6;margin-bottom:6px}
+.term{border-radius:16px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.5)}
+.term .bar{height:40px;display:flex;align-items:center;gap:8px;padding:0 16px;font:400 12px "JetBrains Mono",monospace;opacity:.9}
+.term .bar s{width:10px;height:10px;border-radius:50%;background:currentColor;opacity:.3}
+.term pre{margin:0;padding:20px 22px;min-height:290px;font:400 14px/1.8 "JetBrains Mono",monospace;white-space:pre-wrap}
+.cur{display:inline-block;width:.55em;height:1.05em;vertical-align:-.18em;background:currentColor;animation:bl 1s steps(1) infinite}@keyframes bl{50%{opacity:0}}
+.logo{width:88px;height:88px;margin:0 0 6px}
+.pal{display:flex;gap:6px;margin:18px 0 0}.pal i{width:34px;height:34px;border-radius:8px;border:1px solid rgba(128,128,128,.4)}
+.verdict{margin:18px 0 0;font:500 13px "JetBrains Mono",monospace;opacity:.75}
+/* 1 forge */
+#forge{background:#0E0B09;color:#F3E9DF}#forge .name,#forge .hl{color:#FF5A1F}#forge .post{background:#1A1410;border:1px solid #3A2A1F}#forge .term{background:#140F0C;border:1px solid #3A2A1F}#forge .term .bar{border-bottom:1px solid #3A2A1F}
+/* 2 wish */
+#wish{background:#160A30;color:#EFE7FF}#wish .name{color:#F5C542;font-family:"Cormorant Garamond",serif;font-weight:700;letter-spacing:-.02em;font-style:italic}#wish .tag{font-family:"Cormorant Garamond",serif;font-weight:500}#wish .hl{color:#F5C542}#wish .post{background:#21123F;border:1px solid #3B2670}#wish .term{background:#100722;border:1px solid #3B2670}#wish .term .bar{border-bottom:1px solid #3B2670}
+/* 3 mission */
+#mission{background:#070B18;color:#DDE8FF}#mission .name{font-family:"Space Grotesk";font-weight:700;letter-spacing:-.03em;color:#fff}#mission .hl{color:#7CF3FF}#mission .post{background:#0E1530;border:1px solid #22305F}#mission .term{background:#050814;border:1px solid #22305F}#mission .term .bar{border-bottom:1px solid #22305F}
+/* 4 oracle */
+#oracle{background:#EFE9DD;color:#16130E}#oracle .name{font-family:"Cormorant Garamond",serif;font-weight:700;letter-spacing:-.01em}#oracle .tag{font-family:"Cormorant Garamond",serif;font-weight:500;color:#8A6A28;opacity:1}#oracle .hl{color:#8A6A28}#oracle .post{background:#E5DDCC;border:1px solid #CFC3A9}#oracle .term{background:#16130E;color:#EFE9DD}#oracle .term .bar{border-bottom:1px solid #3A3328}
+/* 5 haunt */
+#haunt{background:#050806;color:#D6F5DD}#haunt .name{color:#A6FFB8;letter-spacing:-.02em}#haunt .hl{color:#A6FFB8}#haunt .post{background:#0B120D;border:1px solid #1F3A27}#haunt .term{background:#030504;border:1px solid #1F3A27}#haunt .term .bar{border-bottom:1px solid #1F3A27}
+#haunt .name{animation:gl 4s infinite}@keyframes gl{0%,92%,100%{transform:none;opacity:1}93%{transform:translate(-4px,1px);opacity:.6}95%{transform:translate(3px,-2px)}97%{opacity:.3}}
+/* 6 voyd */
+#voyd{background:#0A0A0A;color:#F5F5F5}#voyd .tag{color:#A3A3A3;opacity:1}#voyd .hl{color:#fff}#voyd .post{background:#121212;border:1px solid #2a2a2a}#voyd .term{background:#050505;border:1px solid #2a2a2a}#voyd .term .bar{border-bottom:1px solid #2a2a2a}
+.foot{padding:40px 16px 60px;text-align:center;font:400 13px "JetBrains Mono",monospace;color:#888;background:#000}
+</style></head><body>
+<nav class="idx"><a href="#forge">01 FORJ</a><a href="#wish">02 WYSH</a><a href="#mission">03 TMINUS</a><a href="#oracle">04 ORAKL</a><a href="#haunt">05 HAUNT</a><a href="#voyd">06 VOYD+</a></nav>
+
+<section class="c" id="forge"><canvas data-fx="sparks"></canvas>
+  <div class="l">
+    <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><path d="M14 38 H86 L76 50 H60 V70 H74 V80 H26 V70 H40 V50 H24 Z" fill="#FF5A1F"/><path d="M50 8 L56 26 L50 22 L44 26 Z" fill="#F3E9DF"/></svg>
+    <p class="kick">Concept 01 · the forge</p>
+    <h2 class="name">FORJ</h2>
+    <p class="tag">Bring the ore. Leave with the blade.</p>
+    <p class="story">Every idea is raw ore. You drop one sentence into the forge; it heats, it hammers, it quenches, and something finished comes out. Every buyback feeds the fire.</p>
+    <div class="terms"><span>build = <b class="hl">forge</b></span><span>ship = <b class="hl">quench</b></span><span>audit = <b class="hl">temper test</b></span><span>burn = <b class="hl">into the furnace</b></span><span>holders = <b class="hl">smiths</b></span></div>
+    <div class="pal"><i style="background:#0E0B09"></i><i style="background:#FF5A1F"></i><i style="background:#F3E9DF"></i><i style="background:#3A2A1F"></i></div>
+    <div class="post"><b>SAMPLE X POST</b>I brought one sentence of ore.
+The forge gave me a live site in 83 seconds.
+🔥 $FORJ</div>
+    <p class="verdict">→ strongest visuals · burns become the story · warm, tangible</p>
+  </div>
+  <div class="r"><div class="term"><div class="bar"><s></s><s></s><s></s><span>~/frog — forj</span></div><pre data-run='forj "a landing site for $FROG"|◆ the ore is in the fire|  heating    reading your sentence|  hammering  index.html (16.8 KB)|  tempering  checked ✓|✓ forged in 83s|$ forj quench frog|✓ cooled · live at forj.site/frog'></pre></div></div>
+</section>
+
+<section class="c" id="wish"><canvas data-fx="smoke"></canvas>
+  <div class="l">
+    <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><path d="M20 66 Q50 82 80 66 L72 74 Q50 86 28 74 Z" fill="#F5C542"/><path d="M50 64 C38 52 62 46 50 34 C42 26 56 18 50 10" fill="none" stroke="#EFE7FF" stroke-width="6" stroke-linecap="round"/></svg>
+    <p class="kick">Concept 02 · the wish</p>
+    <h2 class="name">wysh</h2>
+    <p class="tag">Make a wish. In one sentence.</p>
+    <p class="story">There is something living in your terminal. Rub it the right way (one sentence) and it grants the wish: a site, a logo, a launch thread. It grants things, not money, and it tells you so.</p>
+    <div class="terms"><span>prompt = <b class="hl">a wish</b></span><span>build = <b class="hl">granted</b></span><span>roast = <b class="hl">the honest genie</b></span><span>holders = <b class="hl">wishkeepers</b></span></div>
+    <div class="pal"><i style="background:#160A30"></i><i style="background:#F5C542"></i><i style="background:#EFE7FF"></i><i style="background:#3B2670"></i></div>
+    <div class="post"><b>SAMPLE X POST</b>I wished for a memecoin website.
+It was granted in 83 seconds.
+I wished to be rich.
+"I grant things, not money."</div>
+    <p class="verdict">→ most meme-able · instant gimmick · risk: feels less serious</p>
+  </div>
+  <div class="r"><div class="term"><div class="bar"><s></s><s></s><s></s><span>~/frog — wysh</span></div><pre data-run='wysh "a landing site for $FROG"|✦ your wish has been heard|  conjuring  index.html (16.8 KB)|✓ granted in 83s|$ wysh "make me rich"|✦ I grant things, not money.|  try: wysh "a site that makes people want to buy"'></pre></div></div>
+</section>
+
+<section class="c" id="mission"><canvas data-fx="radar"></canvas>
+  <div class="l">
+    <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#7CF3FF" stroke-width="5"/><path d="M50 18 L62 58 L50 52 L38 58 Z" fill="#fff"/><path d="M42 66 L50 84 L58 66" fill="#7CF3FF"/></svg>
+    <p class="kick">Concept 03 · mission control</p>
+    <h2 class="name">TMINUS</h2>
+    <p class="tag">T-minus one sentence.</p>
+    <p class="story">You are the commander. One sentence is the mission brief. Countdown, ignition, liftoff: your project reaches orbit and keeps sending signals back.</p>
+    <div class="terms"><span>prompt = <b class="hl">mission brief</b></span><span>build = <b class="hl">ignition</b></span><span>ship = <b class="hl">orbit</b></span><span>echo = <b class="hl">telemetry</b></span><span>holders = <b class="hl">crew</b></span></div>
+    <div class="pal"><i style="background:#070B18"></i><i style="background:#7CF3FF"></i><i style="background:#FFFFFF"></i><i style="background:#22305F"></i></div>
+    <div class="post"><b>SAMPLE X POST</b>T-10 · brief received
+T-0 · liftoff
+83s · $FROG site in orbit
+
+Mission control is open. $TMINUS</div>
+    <p class="verdict">→ "launch" language fits crypto · risk: rockets are overused</p>
+  </div>
+  <div class="r"><div class="term"><div class="bar"><s></s><s></s><s></s><span>~/frog — tminus</span></div><pre data-run='tminus "a landing site for $FROG"|◉ brief received · T-10|  ignition   writing index.html|  stage 2    16.8 KB|✓ liftoff · T+83s|$ tminus orbit frog|✓ in orbit · tminus.site/frog'></pre></div></div>
+</section>
+
+<section class="c" id="oracle"><canvas data-fx="eye"></canvas>
+  <div class="l">
+    <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><path d="M8 50 Q50 12 92 50 Q50 88 8 50 Z" fill="none" stroke="#16130E" stroke-width="5"/><circle cx="50" cy="50" r="15" fill="#8A6A28"/><circle cx="50" cy="50" r="5" fill="#EFE9DD"/></svg>
+    <p class="kick">Concept 04 · the oracle</p>
+    <h2 class="name">Orakl</h2>
+    <p class="tag">Ask. It has already seen it.</p>
+    <p class="story">The Oracle sees the finished project before it exists, then makes it real. It also sees the rug before it happens: every token you ask about gets a reading.</p>
+    <div class="terms"><span>prompt = <b class="hl">a question</b></span><span>build = <b class="hl">a vision</b></span><span>audit = <b class="hl">a prophecy</b></span><span>holders = <b class="hl">seers</b></span></div>
+    <div class="pal"><i style="background:#EFE9DD"></i><i style="background:#16130E"></i><i style="background:#8A6A28"></i><i style="background:#CFC3A9"></i></div>
+    <div class="post"><b>SAMPLE X POST</b>Asked the Oracle about a token.
+Prophecy: 23/100. Hidden mint. Owner not renounced.
+
+The Oracle saw it first. $ORAKL</div>
+    <p class="verdict">→ elegant, premium · audit becomes the hero feature</p>
+  </div>
+  <div class="r"><div class="term"><div class="bar"><s></s><s></s><s></s><span>~ — orakl</span></div><pre data-run='orakl see 0x44ec…48dE|◈ reading the chain…|  owner      renounced ✓|  mint       none found ✓|  source     not verified !|✓ prophecy: 64/100 · CAUTION|$ orakl "a landing site for $FROG"|✓ vision made real in 83s'></pre></div></div>
+</section>
+
+<section class="c" id="haunt"><canvas data-fx="fog"></canvas>
+  <div class="l">
+    <svg class="logo" viewBox="0 0 100 100" aria-hidden="true"><path d="M24 86 V44 Q24 14 50 14 Q76 14 76 44 V86 L67 78 L58 86 L50 78 L42 86 L33 78 Z" fill="#A6FFB8"/><circle cx="40" cy="44" r="6" fill="#050806"/><circle cx="60" cy="44" r="6" fill="#050806"/></svg>
+    <p class="kick">Concept 05 · the haunt</p>
+    <h2 class="name">HAUNT</h2>
+    <p class="tag">You sleep. It builds.</p>
+    <p class="story">Something works in your terminal while you're gone. You leave one sentence before bed; at 3:07 AM it's writing; by morning the site is live and your X has been posting all night.</p>
+    <div class="terms"><span>agent = <b class="hl">the ghost</b></span><span>build = <b class="hl">the haunting</b></span><span>echo = <b class="hl">3AM posts</b></span><span>holders = <b class="hl">the possessed</b></span></div>
+    <div class="pal"><i style="background:#050806"></i><i style="background:#A6FFB8"></i><i style="background:#D6F5DD"></i><i style="background:#1F3A27"></i></div>
+    <div class="post"><b>SAMPLE X POST</b>03:07 · you were asleep
+03:08 · index.html written
+03:09 · live
+
+good morning. $HAUNT</div>
+    <p class="verdict">→ great "3AM" content series · fits Echo · a bit dark</p>
+  </div>
+  <div class="r"><div class="term"><div class="bar"><s></s><s></s><s></s><span>~/frog — haunt · 03:07</span></div><pre data-run='haunt "a landing site for $FROG"|☾ you can sleep now|  03:07  writing index.html|  03:08  16.8 KB|✓ 03:09  it is done|$ haunt appear frog|✓ haunt.site/frog is live'></pre></div></div>
+</section>
+
+<section class="c" id="voyd"><canvas data-fx="tunnel"></canvas>
+  <div class="l">
+    <svg class="logo" viewBox="0 0 256 256" aria-hidden="true"><g transform="translate(0 -6)" fill="none" stroke="#fff" stroke-width="20" stroke-miterlimit="10"><path d="M29.85 44 L128 214 L226.15 44"/><path d="M63.34 44 L128 156 L192.66 44"/><path d="M96.82 44 L128 98 L159.18 44"/></g></svg>
+    <p class="kick">Concept 06 · VOYD, deeper (keeps name, domain, X)</p>
+    <h2 class="name">VOYD</h2>
+    <p class="tag">Speak into the voyd. Something real comes back.</p>
+    <p class="story">The Voyd is a world, not just a tunnel. Ideas fall into the Deep, the agent shapes them in the Dark, and they Return to the Surface as real things. Holders are Voydwalkers; every burn sends $VOYD back into the Deep for good.</p>
+    <div class="terms"><span>agent = <b class="hl">the Deep</b></span><span>build = <b class="hl">the Descent</b></span><span>ship = <b class="hl">the Return</b></span><span>burn = <b class="hl">back to the Deep</b></span><span>holders = <b class="hl">Voydwalkers</b></span></div>
+    <div class="pal"><i style="background:#0A0A0A"></i><i style="background:#F5F5F5"></i><i style="background:#A3A3A3"></i><i style="background:#5C5C5C"></i></div>
+    <div class="post"><b>SAMPLE X POST</b>Voydwalker log #1
+Descent: 83s
+Returned: voydagent.com/s/frog
+
+Every word feeds the voyd.</div>
+    <p class="verdict">→ cheapest and safest · everything built so far stays</p>
+  </div>
+  <div class="r"><div class="term"><div class="bar"><s></s><s></s><s></s><span>~/frog — voyd</span></div><pre data-run='voyd "a landing site for $FROG"|◆ the voyd is listening|  descending  index.html (16.8 KB)|✓ it came back in 83s|$ voyd ship frog|✓ returned · voydagent.com/s/frog'></pre></div></div>
+</section>
+<p class="foot">Lore previews · pick one (or mix two) · names are working titles: domains and X handles still need checking</p>
+
+<script>
+// terminals type their run on a loop
+document.querySelectorAll("pre[data-run]").forEach((pre) => {
+  const L = pre.dataset.run.split("|"); let li = 0, ci = 0, out = "";
+  const color = getComputedStyle(pre.closest(".c").querySelector(".hl") || pre).color;
+  function step() {
+    if (li >= L.length) { setTimeout(() => { li = 0; ci = 0; out = ""; step(); }, 2600); return; }
+    const line = L[li], isCmd = li === 0 || line.startsWith("$ ");
+    if (isCmd && ci < line.length) { ci++; pre.innerHTML = out + (li === 0 ? "$ " : "") + esc(line.slice(0, ci)) + '<span class="cur"></span>'; setTimeout(step, 28); return; }
+    out += (li === 0 ? "$ " : "") + (line.startsWith("✓") || line.startsWith("◆") || line.startsWith("✦") || line.startsWith("◉") || line.startsWith("◈") || line.startsWith("☾") ? `<span style="color:${color}">${esc(line)}</span>` : esc(line)) + "\n";
+    li++; ci = 0; pre.innerHTML = out + '<span class="cur"></span>'; setTimeout(step, isCmd ? 500 : 420);
+  }
+  const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  step();
+});
+// one small animated world per concept
+const fx = {
+  sparks(x, w, h, t, S) { x.fillStyle = "rgba(14,11,9,.25)"; x.fillRect(0, 0, w, h); if (S.p.length < 140) S.p.push({ x: w * (.55 + Math.random() * .4), y: h + 10, vx: (Math.random() - .5) * 1.2, vy: -2 - Math.random() * 3, l: 1 }); S.p.forEach((p) => { p.x += p.vx; p.y += p.vy; p.vy += .015; p.l -= .006; x.fillStyle = `rgba(255,${90 + p.l * 120 | 0},31,${Math.max(0, p.l)})`; x.fillRect(p.x, p.y, 2.4, 2.4); }); S.p = S.p.filter((p) => p.l > 0); },
+  smoke(x, w, h, t) { x.fillStyle = "rgba(22,10,48,.12)"; x.fillRect(0, 0, w, h); x.strokeStyle = "rgba(239,231,255,.08)"; x.lineWidth = 2; for (let k = 0; k < 6; k++) { x.beginPath(); for (let y = h; y > 0; y -= 8) { const xx = w * .75 + Math.sin(y * .012 + t * .8 + k) * (40 + k * 18) + Math.sin(t * .3 + k) * 30; y === h ? x.moveTo(xx, y) : x.lineTo(xx, y); } x.stroke(); } },
+  radar(x, w, h, t) { x.fillStyle = "rgba(7,11,24,.18)"; x.fillRect(0, 0, w, h); const cx = w * .75, cy = h * .5, R = Math.min(w, h) * .42; x.strokeStyle = "rgba(124,243,255,.12)"; for (let r = R / 4; r <= R; r += R / 4) { x.beginPath(); x.arc(cx, cy, r, 0, 7); x.stroke(); } const a = t * 1.4; x.strokeStyle = "rgba(124,243,255,.5)"; x.lineWidth = 2; x.beginPath(); x.moveTo(cx, cy); x.lineTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R); x.stroke(); x.lineWidth = 1; },
+  eye(x, w, h, t) { x.fillStyle = "rgba(239,233,221,.2)"; x.fillRect(0, 0, w, h); const cx = w * .75, cy = h * .5; for (let i = 0; i < 48; i++) { const a = i / 48 * Math.PI * 2 + t * .15, r1 = 60, r2 = 60 + 90 + Math.sin(t + i) * 20; x.strokeStyle = `rgba(138,106,40,${.08 + (i % 4 === 0 ? .1 : 0)})`; x.beginPath(); x.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1); x.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2); x.stroke(); } },
+  fog(x, w, h, t) { x.fillStyle = "rgba(5,8,6,.2)"; x.fillRect(0, 0, w, h); for (let k = 0; k < 4; k++) { x.fillStyle = "rgba(166,255,184,.012)"; x.beginPath(); x.ellipse(w * (.5 + .4 * Math.sin(t * .1 + k)), h * (.3 + k * .18), 320, 60, 0, 0, 7); x.fill(); } },
+  tunnel(x, w, h, t) { x.fillStyle = "rgba(10,10,10,.3)"; x.fillRect(0, 0, w, h); const cx = w * .75, cy = h * .5; for (let i = 0; i < 14; i++) { const d = ((i - t * .8) % 14 + 14) % 14 + .4, R = 600 / d; x.strokeStyle = `rgba(255,255,255,${Math.min(.35, 1 / d)})`; x.beginPath(); x.arc(cx, cy, R, 0, 7); x.stroke(); } x.fillStyle = "#fff"; x.beginPath(); x.arc(cx, cy, 6, 0, 7); x.fill(); },
+};
+const runs = [...document.querySelectorAll("canvas[data-fx]")].map((cv) => ({ cv, x: cv.getContext("2d"), f: fx[cv.dataset.fx], S: { p: [] }, on: false }));
+const io = new IntersectionObserver((es) => es.forEach((e) => { const r = runs.find((r) => r.cv === e.target); r.on = e.isIntersecting; }));
+runs.forEach((r) => io.observe(r.cv));
+function size() { runs.forEach((r) => { r.cv.width = r.cv.clientWidth; r.cv.height = r.cv.clientHeight; }); }
+size(); addEventListener("resize", size);
+(function loop(now) { runs.forEach((r) => r.on && r.f(r.x, r.cv.width, r.cv.height, now / 1000, r.S)); requestAnimationFrame(loop); })(0);
+</script>
+</body></html>

@@ -299,6 +299,66 @@ WHY  User proof beats team proof. Ask before featuring anyone.
 
 
 ─────────────────────────────────────────
+PHASE 3C · AFTER LAUNCH: GIMMICK SET 2  (posts 21 to 25)
+─────────────────────────────────────────
+Goal: stop the scroll. Each video is a joke you get in 2 seconds, with the product as the punchline.
+
+POST 21 · Week 2, Monday
+ATTACH  video/v13-vending.mp4
+COPY
+Insert one sentence.
+Get one site.
+
+"a site for my frog coin" → works.
+"make me rich" → jammed.
+
+The voyd builds things. It doesn't print money.
+voydagent.com
+WHY  Vending machine = instantly readable. The jam is the laugh and the honest line.
+
+
+POST 22 · Week 2, Wednesday
+ATTACH  video/v14-delete.mp4
+COPY
+Things you can delete now:
+
+rm -rf ./the-3-week-wait
+rm -rf ./5k-website-quote.pdf
+rm -rf ./dev-who-ghosted-you
+rm -rf ./one-more-revision.txt
+
+All that's left: one sentence.
+WHY  Every builder has paid for at least one of these. Terminal format fits the brand.
+
+
+POST 23 · Same day, 2 hours later · REPLY to post 22
+COPY
+What else goes in the bin?
+
+Best reply gets its own rm -rf in the next video.
+WHY  Reply bait that feeds the next version of the video.
+
+
+POST 24 · Week 2, Friday, late night (people doomscroll)
+ATTACH  video/v15-crt.mp4
+COPY
+hey.
+
+you've been scrolling for a while.
+the chart can't build anything.
+
+say one sentence: voydagent.com
+WHY  The video switches off your feed like an old TV and talks to you. Post it when people are scrolling.
+
+
+POST 25 · Week 2, Saturday · QUOTE-TWEET post 24
+COPY
+Reply with your one sentence.
+We'll build the best one and post the link.
+WHY  Turns the joke into a Daily Summon. Build it on the site and reply with the real link.
+
+
+─────────────────────────────────────────
 PHASE 4 · EVERY WEEK AFTER (repeat)
 ─────────────────────────────────────────
 
@@ -335,6 +395,9 @@ video/v9-open.mp4     the voyd is open: hold, sign, speak (post 16)
 video/v10-speedrun.mp4  speedrun any%, 1:38.9 (post 17)
 video/v11-dev.mp4     POV: the dev quote vs the voyd (post 18)
 video/v12-burn-PREVIEW.mp4  burn receipt with SAMPLE numbers: render the real one per post 19
+video/v13-vending.mp4 insert one sentence, a site drops out; "make me rich" jams it (post 21)
+video/v14-delete.mp4  rm -rf the old way, each thing glitches away (post 22)
+video/v15-crt.mp4     the doomscroll switches off, the voyd talks to you (post 24)
 img/avatar.png        profile picture
 img/banner.png        profile header with the terminal (banner-v1.png = older version)
 img/wrong.png         finish the sentence (post 3)

@@ -2,7 +2,7 @@
 import { chromium } from "/Users/sergiodyegogmail.com/.npm/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs"; import path from "node:path";
-const ALL = ["speak", "live", "vs", "said", "roast", "sleep", "tiers", "real", "open", "speedrun", "dev", "burn"];
+const ALL = ["speak", "live", "vs", "said", "roast", "sleep", "tiers", "real", "open", "speedrun", "dev", "burn", "vending", "delete", "crt", "captcha", "receipt", "translate"];
 const list = process.argv.slice(2).length ? process.argv.slice(2) : ALL, out = path.resolve("../video"); fs.mkdirSync(out, { recursive: true });
 const b = await chromium.launch(), fps = 30;
 for (const s of list) {
